@@ -7,7 +7,7 @@
     <mat-nav-list>
       <a mat-list-item href="#">Find Doctors</a>
       <a mat-list-item href="#">Video Consult</a>
-      <button mat-raised-button >Login/Register</button>
+      <button *ngIf="!(userName || doctorName || adminName) " mat-raised-button class="desktop-button" routerLink="/user-signup">Login/Register</button>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
