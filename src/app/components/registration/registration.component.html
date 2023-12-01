@@ -21,7 +21,7 @@
           <mat-card-content class=" ">
             <form class="registration-form flex flex-col items-center" [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
               <!-- fullname -->
-              <mat-form-field class="w-full" appearance="outline">
+              <mat-form-field class="w-full" appearance="fill">
                 <mat-label>FullName</mat-label>
                 <input matInput placeholder="Full Name" required [pattern]="namePattern" formControlName="fullName">
                 <mat-error
@@ -34,7 +34,7 @@
                 </mat-error>
               </mat-form-field>
               <!-- mobile number -->
-              <mat-form-field class="w-full" appearance="outline">
+              <mat-form-field class="w-full" appearance="fill">
                 <mat-label>Mobile Number</mat-label>
                 <input matInput placeholder="Mobile Number" required name="mobile_num" [pattern]=" phoneRegex"
                   formControlName="mobile_num">
@@ -47,7 +47,7 @@
                 </mat-error>
               </mat-form-field>
               <!-- email -->
-              <mat-form-field class="w-full" appearance="outline">
+              <mat-form-field class="w-full" appearance="fill">
                 <mat-label>Email</mat-label>
                 <input matInput placeholder="Email" required name="email" formControlName="email">
                 <mat-error
@@ -59,7 +59,7 @@
                 </mat-error>
               </mat-form-field>
               <!-- password -->
-              <mat-form-field class="w-full" appearance="outline">
+              <mat-form-field class="w-full" appearance="fill">
                 <mat-label>Password</mat-label>
                 <input matInput type="password" placeholder="Password" required name="password"
                   formControlName="password">
@@ -73,7 +73,7 @@
                 </mat-error>
               </mat-form-field>
               <!-- confirm password -->
-              <mat-form-field class="w-full" appearance="outline">
+              <mat-form-field class="w-full" appearance="fill">
                 <mat-label>Confirm Password</mat-label>
                 <input matInput type="password" placeholder="Confirm Password" required name="confirmPassword"
                   formControlName="confirmPassword">
