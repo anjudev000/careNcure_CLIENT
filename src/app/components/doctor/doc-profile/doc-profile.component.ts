@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DoctorService } from 'src/app/shared/doctor.service';
 import { doctorProfile } from 'src/app/shared/doctorProfile.model';
 import { DocProfileEditComponent } from './doc-profile-edit/doc-profile-edit.component';
+import { Subscription } from 'rxjs';
 
 
 interface ApiResponse{
@@ -16,7 +17,7 @@ interface ApiResponse{
 
 })
 export class DocProfileComponent {
-
+  docDetailsSub:Subscription | undefined;
   data!:doctorProfile;
 
   constructor( private  doctorService:DoctorService,
@@ -31,7 +32,7 @@ export class DocProfileComponent {
 
   getDocDetails(){
     const doctorId=this.doctorService.getDoctorId();
-    this.doctorService.getDoctorDetails(doctorId).subscribe({
+    this.docDetailsSub =this.doctorService.getDoctorDetails(doctorId).subscribe({
       next:(res)=>{
         this.data = ((res as ApiResponse).doctorData);
         
@@ -56,5 +57,10 @@ export class DocProfileComponent {
       }
     }
   })
+  }
+  ngOnDestroy(){
+    if(this.docDetailsSub){
+      this.docDetailsSub.unsubscribe();
+    }
   }
 }

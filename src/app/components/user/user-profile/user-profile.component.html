@@ -2,25 +2,25 @@
 <!-- cartoon image:  https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp -->
 
 
-<section class="vh-100 " style="background-color: #f4f5f7;">
-    <div class="container py-5 h-100">
-      <div class="row d-flex justify-content-center align-items-center h-100">
-        <div class="col col-lg-6 mb-4 mb-lg-0">
-          <div class="card mb-3 h-100" style="border-radius: .5rem;;">
-            <div class="row g-0">
-              <div class="col-md-4 gradient-custom text-center text-white"
+<section class="h-screen " style="background-color: #f4f5f7;">
+    <div class="container h-screen ">
+      <div class="row flex justify-center items-center">
+        <div class="col col-lg-6 mb-4 mb-lg-0  w-full flex justify-center">
+          <mat-card class="card w-full h-full mt-12 lg:w-6/12" style="border-radius: .5rem;;">
+            <div class="row lg:flex g-0 ">
+              <div class="col p-4 flex-col items-center flex justify-center gradient-custom text-center lg:w-4/12 text-white"
                 style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
                 <img [src]="data.profilePic"
-                  alt="Avatar" class="img-fluid my-5" style="width: 200px; border-radius: 70px;" />
+                  alt="Avatar" class="img-fluid my-10" style="width: 200px; border-radius: 70px;" />
                 <!-- <h5>Marie Horwitz</h5> -->
                 <p>{{data.fullName}}</p>
                 <i class="far fa-edit mb-5"></i>
               </div>
-              <div class="col-md-8">
-                <div class="card-body p-4">
+              <div class="col-md-8  w-full">
+                <div class="card-body p-3 lg:p-16">
                   <h6>Your Information</h6>
                   <hr class="mt-0 mb-4">
-                  <div class="row pt-1">
+                  <div class="row lg:flex justify-between pt-1">
                     <div class="col-6 mb-3">
                       <h6>Email</h6>
                       <p class="text-muted">{{data.email}}</p>
@@ -30,17 +30,17 @@
                       <p class="text-muted">{{data.mobile_num}}</p>
                     </div>
                   </div>
-                  <div class="row pt-1">
+                  <div class="row lg:flex justify-between pt-1">
                     <div class="col-6 mb-3" *ngIf="data.dob">
                       <h6>Date of Birth</h6>
                       <p class="text-muted">{{data.dob | date}}</p>
                     </div>
-                    <div class="col-6 mb-3" *ngIf="data.bloodGroup">
+                    <div class="col-6 mb-3 mr-6" *ngIf="data.bloodGroup">
                       <h6>Blood Group</h6>
                       <p class="text-muted">{{data.bloodGroup}}</p>
                     </div>
                   </div>
-                  <div class="row pt-1">
+                  <div class="row flex justify-between pt-4">
                     <div class="col-12 mb-3" *ngIf="data.gender">
                       <h6>Gender</h6>
                       <p class="text-muted">{{data.gender}}</p>
@@ -50,7 +50,7 @@
                   <div *ngIf="data.address && data.address[0]">
                   <h6>Address</h6>
                   <hr class="mt-0 mb-4">
-                  <div class="row pt-1">
+                  <div class="row lg:flex justify-between pt-4">
                     <div class="col-6 mb-3">
                       <h6>House Name</h6>
                       <p class="text-muted">{{data.address[0].houseName}}</p>
@@ -74,14 +74,14 @@
                   </div>
                   </div>
                  
-                  <div class="d-flex justify-content-start">
-                  <button class="btn btn-primary" (click)="openEditDialog()">Edit Profile</button>
+                  <div class="flex justify-start">
+                  <button mat-raised-button color="primary" (click)="openEditDialog()">Edit Profile</button>
                   <!-- <app-profile-edit></app-profile-edit> -->
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          </mat-card>
         </div>
       </div>
     </div>

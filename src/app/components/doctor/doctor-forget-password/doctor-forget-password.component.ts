@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { DoctorService } from 'src/app/shared/doctor.service';
 import { forgotModel } from 'src/app/shared/passwordReset.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-doctor-forget-password',
@@ -9,6 +10,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./doctor-forget-password.component.css']
 })
 export class DoctorForgetPasswordComponent {
+  subData:Subscription | undefined;
   errorMessages!: string
 
   constructor(private doctorService: DoctorService,
@@ -16,7 +18,7 @@ export class DoctorForgetPasswordComponent {
   ) { }
 
   handleEmailSubmit(formData: forgotModel) {
-    this.doctorService.postEmailForgotPassword(formData).subscribe(
+    this.subData = this.doctorService.postEmailForgotPassword(formData).subscribe(
       (res) => {
         this._snackBar.open('A Link has been sent to your mail to reset the password', 'Close', { duration: 3000 });
 
@@ -32,5 +34,8 @@ export class DoctorForgetPasswordComponent {
 
       }
     )
+  }
+  ngOnDestroy(){
+    this.subData?.unsubscribe();
   }
 }

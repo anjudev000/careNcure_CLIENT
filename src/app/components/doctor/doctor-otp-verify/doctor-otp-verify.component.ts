@@ -3,6 +3,7 @@ import { Otp } from 'src/app/shared/otp.model';
 import { OtpService } from 'src/app/shared/otp.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -11,14 +12,15 @@ import { Router } from '@angular/router';
   styleUrls: ['./doctor-otp-verify.component.css']
 })
 export class DoctorOtpVerifyComponent {
- errorMessages!:string;
+  postData: Subscription | undefined;
+  errorMessages!:string;
  constructor(private otpService:OtpService,
   private router:Router,
   private _snackBar:MatSnackBar
   ){}
  
   handleOtpSubmit(formData:Otp){
-    this.otpService.verifyDoctorOTP(formData).subscribe(
+   this.postData =  this.otpService.verifyDoctorOTP(formData).subscribe(
       res=>{
         this._snackBar.open('OTP Verification Successfull','Close',{duration:3000});
         this.router.navigate(['/doctor-login'])
@@ -37,5 +39,11 @@ export class DoctorOtpVerifyComponent {
 
       }
     )
+  }
+
+  ngOnDestroy(){
+    if(this.postData){
+      this.postData.unsubscribe();
+    }
   }
 }

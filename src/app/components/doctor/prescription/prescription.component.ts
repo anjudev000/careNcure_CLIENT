@@ -3,6 +3,7 @@ import { FormGroup,FormBuilder,FormArray, Validators } from '@angular/forms';
 import { DoctorService } from 'src/app/shared/doctor.service';
 import { MAT_DIALOG_DATA,MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Subscription } from 'rxjs';
 
 interface DialogData{
   id:string;
@@ -16,7 +17,7 @@ interface DialogData{
   styleUrls: ['./prescription.component.css']
 })
 export class PrescriptionComponent {
-
+  subData:Subscription | undefined;
   prescriptionForm!:FormGroup;
 
   constructor(private doctorservice:DoctorService,
@@ -62,7 +63,7 @@ export class PrescriptionComponent {
     onSubmit(){
       console.log(49,'ok',this.prescriptionForm.value);
       const prescriptionData = this.prescriptionForm.value;
-      this.doctorservice.generatePrescription(this.data.id,prescriptionData).subscribe({
+     this.subData =  this.doctorservice.generatePrescription(this.data.id,prescriptionData).subscribe({
         next:(res)=>{
           this._snackBar.open('Prescription Added Successfully','Close',{duration:3000});
           this._dialogRef.close(true)
@@ -73,5 +74,10 @@ export class PrescriptionComponent {
         }
       })
       
+    }
+    ngOnDestroy(){
+      if(this.subData){
+        this.subData.unsubscribe();
+      }
     }
 }

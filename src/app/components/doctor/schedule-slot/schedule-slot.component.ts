@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DoctorService } from 'src/app/shared/doctor.service';
 import { DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Subscription } from 'rxjs';
 
 interface ApiResponse {
   slotsForDate: string[];
@@ -14,6 +15,9 @@ interface ApiResponse {
   styleUrls: ['./schedule-slot.component.css']
 })
 export class ScheduleSlotComponent {
+  slotsSub: Subscription | undefined;
+  bookesSlotSub: Subscription | undefined;
+  sloDataSub:Subscription | undefined;
   slotsForDate: string[] = []
   timeSlots: string[] = [
     '9:00', '9:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30',
@@ -62,7 +66,7 @@ export class ScheduleSlotComponent {
     const formattedDate = this.changeDateFormat(selectedDate);
     const doctorId = this.doctorService.getDoctorId();
     //api call to get the selected slots
-    this.doctorService.getAvailSlots(doctorId, formattedDate).subscribe({
+   this.slotsSub =  this.doctorService.getAvailSlots(doctorId, formattedDate).subscribe({
       next: (res) => {
         const data = ((res as ApiResponse).slotsForDate)
         this.addedSlotData.push({date: formattedDate, timeslots: data})
@@ -76,7 +80,7 @@ export class ScheduleSlotComponent {
     })
 
     //api call to get the slots booked by user
-    this.doctorService.getBookedSlots(doctorId,formattedDate).subscribe({
+   this.bookesSlotSub =  this.doctorService.getBookedSlots(doctorId,formattedDate).subscribe({
       next:(res)=>{
         const data = ((res as ApiResponse).slotsForDate);
         this.updateIsSlotBooked(data)
@@ -132,7 +136,7 @@ export class ScheduleSlotComponent {
   onSubmit() {
     const doctorId = this.doctorService.getDoctorId();
     
-    this.doctorService.addTimeSlots(doctorId, this.addedSlotData).subscribe({
+  this.sloDataSub =  this.doctorService.addTimeSlots(doctorId, this.addedSlotData).subscribe({
       next: (res) => {
         this._snackBar.open('SLOTS ADDED SUCCESSFULLY','Close',{duration:3000})
 
@@ -143,5 +147,16 @@ export class ScheduleSlotComponent {
     })
     this.timeslotForm.reset();
     this.addedSlotData = [];
+  }
+  ngOnDestroy(){
+    if(this.slotsSub){
+      this.slotsSub.unsubscribe();
+    }
+    if(this.bookesSlotSub){
+      this.bookesSlotSub.unsubscribe();
+    }
+    if(this.sloDataSub){
+      this.sloDataSub.unsubscribe();
+    }
   }
 }

@@ -1,9 +1,8 @@
-.container{
+/* .container{
   display:flex ;
   margin:60px;
   justify-content: center;
   align-items: flex-start;
-  /* height: 100vh; */
   
 }
 .left{
@@ -14,14 +13,9 @@
   align-items: center;
 } 
 .left img {
-  /* max-width: 100%;
-  height: auto; */
   width: 370px;
   height: 370px;
   object-fit: cover;
-  /* border-width: 2px;
-  border-color: brown;
-  border-style: solid; */
 }
 .right{
   flex: 1;
@@ -84,4 +78,36 @@ button {
   padding: 10px;
   margin-top: 10px;
   border-radius: 4px;
+} */
+
+
+/*  Style to fix the weird border with angular material */
+/* .mdc-notched-outline__notch {
+  border-right: none !important;
+} */
+
+/* .mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field .mdc-notched-outline__notch {
+  border-right-style: hidden;
+}
+.mat-mdc-input-element {
+  box-shadow: none !important; */
+
+/* .mat-mdc-form-field-infix {
+  border-right-style: hidden !important;
+} */
+/* .mdc-notched-outline__notch{
+  border: none !important;
+
+} */
+/* .mdc-notched-outline__notch div{
+  border-right: none !important;
+} */
+
+/* .mat-form-field {
+  border-right: none !important;
+} */
+
+/* YourComponent.styles.css */
+.mat-form-field .mat-input-element {
+  border-right: none !important;
 }

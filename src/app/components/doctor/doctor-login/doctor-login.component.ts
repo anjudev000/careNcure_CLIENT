@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { loginModel } from 'src/app/shared/login.model';
 import { DoctorService } from 'src/app/shared/doctor.service';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 interface DoctorLoginResponse{
   doctorToken:string
@@ -13,6 +14,7 @@ interface DoctorLoginResponse{
   styleUrls: ['./doctor-login.component.css']
 })
 export class DoctorLoginComponent {
+  postData: Subscription | undefined;
   errorMessages!:string;
   isDoctor:boolean = true;
   constructor(private doctorService:DoctorService,
@@ -27,7 +29,7 @@ export class DoctorLoginComponent {
 
     handleDoctorLoginSubmit(formData:loginModel){
       this.errorMessages='';
-      this.doctorService.postLogin(formData).subscribe(
+      this.postData = this.doctorService.postLogin(formData).subscribe(
         res=>{
           this.doctorService.setToken((res as DoctorLoginResponse).doctorToken);
           this.router.navigateByUrl('/doctor-home');
@@ -42,5 +44,11 @@ export class DoctorLoginComponent {
         }
         }
       )
+    }
+
+    ngOnDestroy(){
+      if(this.postData){
+        this.postData.unsubscribe();
+      }
     }
 }

@@ -3,6 +3,7 @@ import { DoctorService } from 'src/app/shared/doctor.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { User } from 'src/app/shared/user.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-doctor-registration',
@@ -10,6 +11,7 @@ import { User } from 'src/app/shared/user.model';
   styleUrls: ['./doctor-registration.component.css']
 })
 export class DoctorRegistrationComponent {
+  postData:Subscription | undefined;
 showerrorMessages!:string;
 showSuccessMessage!:boolean;
 constructor(private doctorService:DoctorService,
@@ -18,7 +20,7 @@ constructor(private doctorService:DoctorService,
   ){}
   handleRegistrationSubmit(formData:User){
     this.showerrorMessages='';
-    this.doctorService.postRegister(formData).subscribe(
+    this.postData = this.doctorService.postRegister(formData).subscribe(
       res=>{
         this.showSuccessMessage = true;
         this._snackBar.open('Doctor Registered. Verify To Activate your account','Close',{duration:3000});
@@ -34,5 +36,11 @@ constructor(private doctorService:DoctorService,
         }
       }
     )
+  }
+
+  ngOnDestroy(){
+    if(this.postData){
+      this.postData.unsubscribe();
+    }
   }
 }

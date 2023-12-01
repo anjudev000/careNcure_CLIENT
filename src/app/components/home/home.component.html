@@ -1,48 +1,71 @@
+<div class="px-10 pt-5 md:px-16 flex flex-col items-center">
 
-
-<div class="main_container">
-
-  <!-- searchbar -->
-  <div class="searchbar_container">
-    <form class="search-form"> 
-    <div class="form-field item1">
-      <mat-form-field appearance="outline">
-        <mat-label>Search Location</mat-label>
-        <mat-select [(ngModel)]="selectedValue" name="location">
-          <mat-option *ngFor="let location of locations" [value]="location.value">
-            {{location.viewValue}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      </div>
-      <div class="form-field item2">
-        <mat-form-field class="search-input" appearance="outline">
-        <mat-label>Search doctors,hospitals</mat-label>
-        <input matInput placeholder="eg: Rainbow Hospital" required>
-        <mat-error></mat-error>
-      
-      </mat-form-field>
-    </div>
-    </form>
-  </div>
-<!-- video-playing -->
-<div class="video-container ">
-  
-    <video controls>
+  <!-- video-playing -->
+  <div class="mb-4">
+    <video controls class="rounded-2xl">
       <source src="assets/videos/video1.mp4" type="video/mp4">
       Your browser does not support the video tag.
     </video>
-  
-  
+
+  </div>
+
+ 
+
+  <div class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-24 lg:px-14 lg:gap-20">
+    <div class="rounded-2xl md:w-aua  shadow-md">
+      <div class=""><img class="rounded-lg rounded-b-none" src="assets/img/pediatricsS.jpeg"></div>
+      <div class="p-3 md:p-6">
+        <div class="text-xl font-medium">Dentist</div>
+        <div>Lorem ipsum dolor sit amet.</div>
+      </div>
+    </div>
+    <div class="rounded-2xl shadow-md">
+      <div><img class="rounded-lg rounded-b-none" src="assets/img/pediatricsS.jpeg"></div>
+      <div class="p-3 md:p-6">
+        <div class="text-xl font-medium">Dentist</div>
+        <div>Lorem ipsum dolor sit amet.</div>
+      </div>
+    </div>
+    <div class="rounded-2xl  shadow-md">
+      <div><img class="rounded-lg rounded-b-none" src="assets/img/pediatricsS.jpeg"></div>
+      <div class="p-3 md:p-6">
+        <div class="text-xl font-medium">Dentist</div>
+        <div>Lorem ipsum dolor sit amet.</div>
+      </div>
+    </div>
+    <div class="rounded-2xl  shadow-md">
+      <div><img class="rounded-lg rounded-b-none" src="assets/img/pediatricsS.jpeg"></div>
+      <div class="p-3 md:p-6">
+        <div class="text-xl font-medium">Dentist</div>
+        <div>Lorem ipsum dolor sit amet.</div>
+      </div>
+    </div>
+
+    <div class="rounded-2xl  shadow-md">
+      <div><img class="rounded-lg rounded-b-none" src="assets/img/pediatricsS.jpeg"></div>
+      <div class="p-3 md:p-6">
+        <div class="text-xl font-medium">Dentist</div>
+        <div>Lorem ipsum dolor sit amet.</div>
+      </div>
+    </div>
+    <div class="rounded-2xl  shadow-md">
+      <div><img class="rounded-lg rounded-b-none" src="assets/img/pediatricsS.jpeg"></div>
+      <div class="p-3 md:p-6">
+        <div class="text-xl font-medium">Dentist</div>
+        <div>Lorem ipsum dolor sit amet.</div>
+      </div>
+    </div>
+    
+  </div>
 </div>
 
-<!-- cards -->
+      <footer class="bg-zinc-300 h-1/12 w-screen bottom-0 mt-5 text-white drop-shadow-md p-3 text-base">
+        <div class="w-4/12">
+        <img src="assets/img/cnc6.png" alt="">
 
-
-
-
-
-
-
-
-
+        </div>
+        <div class="drop-shadow-lg">About</div>
+        <div class="drop-shadow-lg">Contact us</div>
+        <div class="drop-shadow-lg">Career</div>
+        
+      </footer>

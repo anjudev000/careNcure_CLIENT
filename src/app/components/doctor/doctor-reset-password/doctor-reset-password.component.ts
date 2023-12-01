@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { DoctorService } from 'src/app/shared/doctor.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Subscription } from 'rxjs';
 
 interface doctorIdRes{
   doctorId:string
@@ -17,6 +18,8 @@ interface newPasswordData {
   styleUrls: ['./doctor-reset-password.component.css']
 })
 export class DoctorResetPasswordComponent {
+  subData1:Subscription | undefined;
+  subData2:Subscription | undefined;
   errorMessages!:string;
 
   constructor(private route:Router,
@@ -26,7 +29,7 @@ export class DoctorResetPasswordComponent {
     ){}
 
     handlepasswordReset(data:any){
-      this.doctorService.getUserIdfromPasswordToken(data.token).subscribe(
+      this.subData1 = this.doctorService.getUserIdfromPasswordToken(data.token).subscribe(
         res=>{
           const doctorId = ((res as doctorIdRes).doctorId);
           this.updatePassword(doctorId,data.password)
@@ -40,7 +43,7 @@ export class DoctorResetPasswordComponent {
     }
     updatePassword(doctorId:string,newPassword:string){
       const newPasswordData:newPasswordData={doctorId,newPassword}
-      this.doctorService.postNewPassword(newPasswordData).subscribe(
+     this.subData2 =  this.doctorService.postNewPassword(newPasswordData).subscribe(
         res=>{
           this._snackBar.open('Password Changed Successfully','close',{duration:3000});
           this.route.navigate(['/doctor-login']);
@@ -57,5 +60,13 @@ export class DoctorResetPasswordComponent {
   
         }
       )
+    }
+    ngOnDestroy(){
+      if(this.subData1){
+        this.subData1.unsubscribe();
+      }
+      if(this.subData2){
+        this.subData2.unsubscribe();
+      }
     }
 }

@@ -4,9 +4,9 @@ import { MatTableDataSource } from '@angular/material/table';
 import { AdminService } from 'src/app/shared/admin.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
-import { doctorProfile } from 'src/app/shared/doctorProfile.model';
 import { MessageDialogComponent } from './message-dialog/message-dialog.component';
 import Swal from 'sweetalert2';
+import { Subscription } from 'rxjs';
 
 interface ApiResponse{
   doctors:DoctorData[];
@@ -18,17 +18,12 @@ interface ApiResponse{
   styleUrls: ['./pending-doc.component.css']
 })
 export class PendingDocComponent {
+  private pendingDocSub: Subscription | undefined;
+  private approvedDocSub: Subscription | undefined;
+  private rejectedDocSub: Subscription | undefined;
   isPendingDoc!:boolean;
   doctorColumns:string[] = ['fullName','mobile_num','email','RegnNumber','specialization','status','Action'];
-//   doctorColumns: { apiHeader: string, customHeader: string }[] = [
-//     { apiHeader: 'fullName', customHeader: 'Name' },
-//     { apiHeader: 'mobile_num', customHeader: 'Phone'},
-//     { apiHeader: 'email', customHeader: 'Email'},
-//     { apiHeader: 'RegnNumber', customHeader: 'Registration'},
-//     { apiHeader:'specialization',customHeader: 'Department'},
-//     { apiHeader:'status',customHeader: 'Status'},
-//     { apiHeader: '',customHeader: 'Action'}
-//  ]
+
   dataSource!:MatTableDataSource<DoctorData>
   constructor(
     private adminService:AdminService,
@@ -40,7 +35,7 @@ export class PendingDocComponent {
     this.getPendingDoctors();
   }
   getPendingDoctors(){
-    this.adminService.getPendingDocList().subscribe({
+   this.pendingDocSub =  this.adminService.getPendingDocList().subscribe({
       next:(res)=>{
         if(res && ((res as ApiResponse).doctors)){
           const docArray = ((res as ApiResponse).doctors);
@@ -67,7 +62,7 @@ export class PendingDocComponent {
       cancelButtonText:'Don\'t Approve'
     }).then((result)=>{
       if(result.isConfirmed){
-        this.adminService.postDocApproval(doctorId).subscribe({
+        this.approvedDocSub = this.adminService.postDocApproval(doctorId).subscribe({
           next:(res)=>{
             this._snackBar.open('Doctor Approved','Close',{duration:3000});
             this.dataSource.data = this.dataSource.data.map((row)=>{
@@ -100,7 +95,7 @@ export class PendingDocComponent {
        const dialogRef = this._dialog.open(MessageDialogComponent);
         dialogRef.afterClosed().subscribe({
           next:(res)=>{
-            this.adminService.postDocRejection(doctorId,res).subscribe({
+            this.rejectedDocSub = this.adminService.postDocRejection(doctorId,res).subscribe({
               next:(res)=>{
                 this._snackBar.open('Doctor rejected','Close',{duration:3000});
                 this.dataSource.data = this.dataSource.data.map((row)=>{
@@ -120,6 +115,18 @@ export class PendingDocComponent {
         
       }
     })
+  }
+
+  ngOnDestroy(){
+    if(this.pendingDocSub){
+      this.pendingDocSub.unsubscribe();
+    }
+    if(this.approvedDocSub){
+      this.approvedDocSub.unsubscribe();
+    }
+    if(this.rejectedDocSub){
+      this.rejectedDocSub.unsubscribe();
+    }
   }
 
 

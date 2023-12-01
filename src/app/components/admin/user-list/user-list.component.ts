@@ -4,6 +4,7 @@ import { UserData } from 'src/app/data-table/data-table.component';
 import {MatTableDataSource} from '@angular/material/table';
 import Swal from 'sweetalert2';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Subscription } from 'rxjs';
 
 
 interface ApiResponse {
@@ -16,14 +17,12 @@ interface ApiResponse {
   styleUrls: ['./user-list.component.css']
 })
 export class UserListComponent {
+  private userListSub:Subscription | undefined;
+  private userBlockSub:Subscription | undefined;
+
   isUser!:boolean;
   userColumns: string[] = ['fullName', 'mobile_num', 'email','Action'];
-  // userColumns: { apiHeader: string, customHeader: string }[] = [
-  //    { apiHeader: 'fullName', customHeader: 'Name' },
-  //    { apiHeader: 'mobile_num', customHeader: 'Phone'},
-  //    { apiHeader: 'email', customHeader: 'Email'},
-  //    { apiHeader: '',customHeader: 'Action'}
-  // ]
+ 
   header: string[] = ['Name', 'Phone', 'Email', 'Action'];
   dataSource!:MatTableDataSource<UserData>
   block:boolean=true;
@@ -37,7 +36,7 @@ export class UserListComponent {
 
 
 getAllUser() {
-  this.adminService.getAllUsers().subscribe({
+  this.userListSub = this.adminService.getAllUsers().subscribe({
     next: (res) => {
         if (res && ((res as ApiResponse).users)) {
           // Assuming your API response structure is { "users": [...] }
@@ -54,34 +53,7 @@ getAllUser() {
   });
 }
 
-// handleblock(userId:string, isblocked:boolean){
- 
 
-//   const confirmationMessage = isblocked ? 'Do you want to unblock this user?' : 'Do you want to block this user?';
-
-//   // Show a Swal confirmation alert
-//   Swal.fire({
-//     title: 'Confirmation',
-//     text: confirmationMessage,
-//     icon: 'warning',
-//     showCancelButton: true,
-//     confirmButtonText: 'Yes',
-//     cancelButtonText: 'No',
-//   }).then((result) => {
-//     if (result.isConfirmed) {
-//       // User confirmed, proceed with the block/unblock action
-//       const apimethod = isblocked ? this.adminService.postUserBlockUnblock(userId) : this.adminService.postUserBlockUnblock(userId);
-//       apimethod.subscribe({
-//         next: (res) => {
-//           console.log(isblocked ? 'User unblocked' : 'User blocked');
-//         },
-//         error: (err) => {
-//           console.error('Error:', err);
-//         },
-//       });
-//     }
-//   });
-// }
 
 handleblock(userId: string, isblocked: boolean) {
   const confirmationMessage = isblocked ? 'Do you want to unblock this user?' : 'Do you want to block this user?';
@@ -98,7 +70,7 @@ handleblock(userId: string, isblocked: boolean) {
     if (result.isConfirmed) {
       // User confirmed, proceed with the block/unblock action
       const apimethod = isblocked ? this.adminService.postUserBlockUnblock(userId) : this.adminService.postUserBlockUnblock(userId);
-      apimethod.subscribe({
+     this.userBlockSub =  apimethod.subscribe({
         next: (res) => {
           // Update the button text after successful API call
           const updatedRow = this.dataSource.data.find((row) => row._id === userId);
@@ -116,6 +88,15 @@ handleblock(userId: string, isblocked: boolean) {
       });
     }
   });
+}
+
+ngOnDestroy(){
+  if(this.userListSub){
+this.userListSub.unsubscribe();
+  }
+  if(this.userBlockSub){
+    this.userBlockSub.unsubscribe();
+  }
 }
 
 

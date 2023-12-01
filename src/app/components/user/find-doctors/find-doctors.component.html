@@ -1,10 +1,10 @@
-<div class="container">
-  <div class="availableContainer">
-    <h2>{{docCount}} Doctors available in {{deptName}}</h2>
+<div class="px-6">
+  <div class="flex items-center p-3 mt-2 availableContainer">
+    <div class="m-0 text-xl font-medium">{{docCount}} Doctors available in {{deptName}}</div>
   </div>
-  <div class="gridContainer">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-2">
     <div class="doc-div" *ngFor="let doctor of doctorsList">
-      <mat-card class="example-card">
+      <mat-card class="example-card gap-2 w-full">
         <mat-card-header>
           <mat-card-title-group>
             <mat-card-title>Dr.{{doctor.fullName}}</mat-card-title>
@@ -16,8 +16,8 @@
           {{doctor.description}}
           <h3>Fees: {{doctor.fee}}</h3>
         </mat-card-content>
-        <button mat-raised-button color="primary" (click)="onClick(doctor)">Book Now</button>
       </mat-card>
+      <button mat-raised-button class="mt-2 lg:mt-1 w-full" color="primary" (click)="onClick(doctor)">Book Now</button>
     </div>
   </div>
 

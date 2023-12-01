@@ -1,4 +1,5 @@
 import { Component,ViewChild,ElementRef } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { DoctorService } from 'src/app/shared/doctor.service';
 
 
@@ -9,6 +10,7 @@ import { DoctorService } from 'src/app/shared/doctor.service';
   styleUrls: ['./doctor-home.component.css']
 })
 export class DoctorHomeComponent {
+  subData : Subscription | undefined;
   dashboardData: any = {};
   totalAppointments:number=0;
   monthlyAppointmentsRevenue!:number[];
@@ -21,7 +23,7 @@ export class DoctorHomeComponent {
   constructor(private doctorService:DoctorService){}
   ngOnInit(){
     const doctorId = this.doctorService.getDoctorId();
-    this.doctorService.getDashData(doctorId).subscribe({
+    this.subData = this.doctorService.getDashData(doctorId).subscribe({
       next:(res)=>{
         console.log(16,res);
         this.dashboardData = res;
@@ -47,5 +49,8 @@ export class DoctorHomeComponent {
         console.log(20,err.message);
        }
     })
+  }
+  ngOnDestroy(){
+    this.subData?.unsubscribe();
   }
 }

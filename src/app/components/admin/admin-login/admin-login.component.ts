@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { AdminService } from 'src/app/shared/admin.service';
+import { Subscription } from 'rxjs';
 
 interface loginRes{
   adminToken:string;
@@ -14,6 +15,7 @@ interface loginRes{
   styleUrls: ['./admin-login.component.css']
 })
 export class AdminLoginComponent {
+  private loginSubsription: Subscription | undefined;
   loginForm!: FormGroup;
     loading = false;
     submitted = false;
@@ -38,15 +40,23 @@ export class AdminLoginComponent {
       
       onSubmit(){
         const formData = this.loginForm.value;
-        this.adminService.postLogin(formData).subscribe(
-          res=>{
+       this.loginSubsription =  this.adminService.postLogin(formData).subscribe({
+          next:res=>{
             this.adminService.setToken((res as loginRes).adminToken);
             this.router.navigateByUrl('/admin-dashboard');
           },
-          err=>{
+          error:err=>{
             this.error = err.error.message;
-            
+
           }
+        }
+         
         )
+      }
+
+      ngOnDestroy(){
+        if(this.loginSubsription){
+          this.loginSubsription.unsubscribe();
+        }
       }
 }

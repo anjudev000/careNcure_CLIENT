@@ -1,24 +1,20 @@
-<div class="search-container">
-    <img src="assets/img/background.jpg" alt="Search Image" class="search-image">
-    <div class="search-input-container">
-        <form class="example-form">
-            <mat-form-field class="example-full-width " appearance="outline">
-              <mat-label>Search For Speciality</mat-label>
-              <input type="text"
-                     placeholder="search for your required speciality"
-                     aria-label="Number"
-                     matInput
-                     [formControl]="myControl"
-                     [matAutocomplete]="auto"
-                     >
-              <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onDeptSelected($event.option.value)">
-                <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-                  {{option}}
-                </mat-option>
-              </mat-autocomplete>
-            </mat-form-field>
-          </form>
-          
+<div class="search-container h-screen">
+ <div class='h-full'>
+  <img src="assets/img/background.jpg" alt="Search Image" class="object-cover w-full h-full">
+  <form class="absolute top-80 w-full flex justify-center ">
+    <div class="lg:w-3/12 w-full bg-white p-1 flex justify-center items-center rounded-lg ">
+      <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Search For Speciality</mat-label>
+        <input type="text" placeholder="search for your required speciality" aria-label="Number" matInput
+          [formControl]="myControl" [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onDeptSelected($event.option.value)">
+          <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+            {{option}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
     </div>
-  </div>
-  
+  </form>
+ </div>
+
+</div>

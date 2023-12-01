@@ -1,4 +1,5 @@
 import { Component} from '@angular/core';
+import { Subscription } from 'rxjs';
 import { AdminService } from 'src/app/shared/admin.service';
 
 
@@ -8,6 +9,8 @@ import { AdminService } from 'src/app/shared/admin.service';
   styleUrls: ['./admin-dash.component.css']
 })
 export class AdminDashComponent {
+
+  private dashboardDataSubscription:Subscription | undefined;
 
   dashboardData: any = {};
   totalAppointments:number=0;
@@ -21,9 +24,8 @@ export class AdminDashComponent {
   constructor(private adminService:AdminService){}
  
   ngOnInit(){
-    console.log("hiiiii");
     
-    this.adminService.getDashboardData().subscribe({
+    this.dashboardDataSubscription = this.adminService.getDashboardData().subscribe({
       next:(res)=>{
         this.dashboardData = res;
         console.log(this.dashboardData,26);
@@ -43,5 +45,11 @@ export class AdminDashComponent {
           })
       }
     })
+  }
+
+  ngOnDestroy(){
+    if(this.dashboardDataSubscription){
+      this.dashboardDataSubscription.unsubscribe();
+    }
   }
 }
