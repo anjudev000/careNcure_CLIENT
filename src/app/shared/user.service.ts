@@ -82,6 +82,15 @@ export class UserService {
   getPrescriptionDetails(id:string){
     return this.http.get(environment.apiBaseUrl+`/get-prescription/${id}`);
   }
+  getAppointmentStatus(id:string){
+    return this.http.get(environment.apiBaseUrl+`/get-app-status/${id}`);
+  }
+  postTransactionDetails(userId:string,amount:number){
+    return this.http.post(environment.apiBaseUrl+'/create-payment-transaction',{userId,amount});
+  }
+  getAllTransactions(userId:string){
+    return this.http.get(environment.apiBaseUrl+`/get-all-transactions/${userId}`);
+  }
 
   //helper methods
 

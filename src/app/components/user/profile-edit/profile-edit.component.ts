@@ -1,12 +1,10 @@
-import { DialogRef } from '@angular/cdk/dialog';
 import { Component, Inject, Input } from '@angular/core';
-import { FormBuilder, FormGroup, } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { UserService } from 'src/app/shared/user.service';
 import { UserProfile } from 'src/app/shared/userProfile.model';
-import { Address } from 'src/app/shared/userProfile.model';
 
 @Component({
   selector: 'app-profile-edit',
@@ -17,33 +15,36 @@ export class ProfileEditComponent {
   selectedFileName: string = '';
   editForm!: FormGroup;
   userdata!: UserProfile;
+  phoneRegex = /^[0-9]{10}$/; 
+  pinRegex = /^(?!000000)[0-9]{6}$/;
+  addressRegex= /^[A-Za-z\s.'-]+$/;
 
 
   constructor(private fb: FormBuilder,
     private userService: UserService,
     private _snackBar: MatSnackBar,
     private _dialogRef: MatDialogRef<ProfileEditComponent>,
-    private sanitizer: DomSanitizer,
+    private _snackbar:MatSnackBar,
     @Inject(MAT_DIALOG_DATA) public data: { userData: UserProfile }
   ) {
     this.userdata = data.userData
       
       this.editForm = fb.group({
-        fullName: [this.userdata.fullName || ''],
-        email: [this.userdata.email || ''],
-        mobile_num: [this.userdata.mobile_num || ''],
+        fullName: [{value:this.userdata.fullName || '',disabled:true}],
+        email: [{value:this.userdata.email || '',disabled:true}],
+        mobile_num: [this.userdata.mobile_num || '',Validators.pattern(this.phoneRegex)],
         dob: [this.userdata.dob || ''],
         gender: [this.userdata.gender || ''],
         bloodGroup: [this.userdata.bloodGroup || ''],
         profilePic: [''],
 
         address: this.fb.group({
-          houseName: [(this.userdata.address && this.userdata?.address[0]?.houseName) || ''],
+          houseName: [(this.userdata.address && this.userdata?.address[0]?.houseName) || '',Validators.pattern(this.addressRegex)],
           houseNumber: [(this.userdata.address && this.userdata?.address[0]?.houseNumber) || ''],
-          street: [(this.userdata.address && this.userdata.address[0]?.street) || ''],
-          city: [(this.userdata.address && this.userdata.address[0]?.city) || ''],
-          state: [(this.userdata.address && this.userdata.address[0]?.state) || ''],
-          pincode: [(this.userdata.address && this.userdata.address[0]?.pincode) || '']
+          street: [(this.userdata.address && this.userdata.address[0]?.street) || '',Validators.pattern(this.addressRegex)],
+          city: [(this.userdata.address && this.userdata.address[0]?.city) || '',Validators.pattern(this.addressRegex)],
+          state: [(this.userdata.address && this.userdata.address[0]?.state) || '',Validators.pattern(this.addressRegex)],
+          pincode: [(this.userdata.address && this.userdata.address[0]?.pincode) || '',Validators.pattern(this.pinRegex)]
         })
       })
     
@@ -58,6 +59,7 @@ export class ProfileEditComponent {
   }
 
   onFormSubmit() {
+    if(this.editForm.valid){
       const formData = new FormData();
       formData.append('fullName', this.editForm.get('fullName')?.value);
       formData.append('email', this.editForm.get('email')?.value);
@@ -96,6 +98,10 @@ export class ProfileEditComponent {
           });
         }
       );
+    }else{
+      this._snackBar.open('Form is not valid! Please check the fileds!','Close',{duration:3000})
+    }
+     
   }
 
 

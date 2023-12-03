@@ -135,6 +135,12 @@ export class ScheduleSlotComponent {
 
   onSubmit() {
     const doctorId = this.doctorService.getDoctorId();
+     // Check if at least one time slot is selected
+  if (this.addedSlotData.length === 0 || this.addedSlotData.every(data => data.timeslots.length === 0)) {
+    // Show an alert or message to inform the user to select at least one time slot
+    this._snackBar.open('Please select at least one time slot.','Close',{duration:3000});
+    return;
+  }
     
   this.sloDataSub =  this.doctorService.addTimeSlots(doctorId, this.addedSlotData).subscribe({
       next: (res) => {

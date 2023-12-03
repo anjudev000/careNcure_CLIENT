@@ -4,7 +4,7 @@
 
             <div>
                 <h2>Select the date to see available slots</h2>
-                <mat-form-field appearance="outline" >
+                <mat-form-field appearance="fill" >
                     <mat-label>Choose a date</mat-label>
                     <input matInput [matDatepicker]="picker" [min]="minDate" [max]="maxDate" [(ngModel)]="selectedDate" (ngModelChange)="availableTimeSlots();" >
                     <!-- <mat-hint>{{selectedDate}}</mat-hint> -->

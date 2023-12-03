@@ -29,6 +29,9 @@ interface Appointment {
   slotBooked: string;
   status: string;
 }
+interface StatusRes{
+  status:string;
+}
 
 @Component({
   selector: 'app-doctor-appointments',
@@ -40,6 +43,7 @@ export class DoctorAppointmentsComponent {
   private cancelAppointmentsSub:Subscription | undefined;
   private confirmAppointmentsSub:Subscription | undefined;
   appointments: Appointment[] = [];
+  isCancelled:boolean=false;
   constructor(
     private doctorService: DoctorService,
     private socketService: SocketService,
@@ -123,12 +127,28 @@ export class DoctorAppointmentsComponent {
     })
   }
   startVideoCall(app: Appointment) {
-    const room = app._id + app.userId._id;
-    const email = app.doctorId.email;
-    console.log(119, room);
-    this.socketService.joinRoom({ email, room });
-    console.log(128, room)
-    this.router.navigate([`doctor/call/${room}`], { state: { value: 'doctor', appointmentId: app._id } });
+
+    this.doctorService.getAppStatus(app.appointmentId).subscribe({
+      next:(res)=>{
+        const statusData = ((res as StatusRes).status);
+        
+        if (statusData === 'Cancelled') {
+          // If the appointment is cancelled, do not proceed with the video call.
+          console.log('Appointment is cancelled. Cannot start the call.');
+          this._snackBar.open('Appointment is cancelled. Cannot start the call.','Close',{duration:3000});
+          return;
+        }else{
+          console.log('working here',statusData);
+          const room = app._id + app.userId._id;
+          const email = app.doctorId.email;
+          console.log(119, room);
+          this.socketService.joinRoom({ email, room });
+          console.log(128, room)
+          this.router.navigate([`doctor/call/${room}`], { state: { value: 'doctor', appointmentId: app._id } });
+      
+        }
+        }
+    })
   }
 
   createPrescription(app: Appointment) {

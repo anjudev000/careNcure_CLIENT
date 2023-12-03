@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DoctorDataService } from 'src/app/shared/doctor-data.service';
 import { UserService } from 'src/app/shared/user.service';
@@ -56,7 +57,8 @@ export class FindDoctorsComponent {
   constructor(private route:ActivatedRoute,
     private userservice:UserService,
     private router:Router,
-    private doctorData:DoctorDataService
+    private doctorData:DoctorDataService,
+    private _snackBar:MatSnackBar
     ){}
 
   ngOnInit(){
@@ -71,10 +73,19 @@ export class FindDoctorsComponent {
       next:(res)=>{
         this.doctorsList = ((res as ApiResponse).doctors);
         this.docCount = this.doctorsList.length;
-        console.log(64,this.doctorsList);
-        // console.log(66,this.doctorsList[0].fullName);
-        
+        console.log(74,this.doctorsList);
+        console.log(75,this.docCount);
+        },
+        error:(err)=>{
+           // Check if the error status is 404 (Not Found)
+      if (err.status === 404) {
+        // Set docCount to 0 if no doctors are found
+        this.docCount = 0;
+      } else {
+        console.error('Error fetching doctors:', err);
+        this._snackBar.open('err','Close',{duration:3000});
       }
+        }
     })
   }
 

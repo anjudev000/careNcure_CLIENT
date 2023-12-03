@@ -39,7 +39,7 @@
                 <input matInput placeholder="Mobile Number" required name="mobile_num" [pattern]=" phoneRegex"
                   formControlName="mobile_num">
                 <mat-error
-                  *ngIf="signUpForm.get('mobile_num')?.invalid && (signUpForm.get('mobile_num')?.dirty || signUpForm.get('email')?.touched)">
+                  *ngIf="signUpForm.get('mobile_num')?.invalid && (signUpForm.get('mobile_num')?.dirty || signUpForm.get('mobile_num')?.touched)">
                   <ng-container *ngIf="signUpForm.get('mobile_num')?.errors?.['required']">Phone Number
                     required</ng-container>
                   <ng-container *ngIf="signUpForm.get('mobile_num')?.errors?.['pattern']">Invalid Phone

@@ -69,27 +69,6 @@ getUserInfo(){
 
 }
 
-// onConfirmAppointment(){
-//   this.doctorData={
-//     doctorId:this.doctorId,
-//     fullName:this.doctorName,
-//     fee:this.fees
-//   }
-//   this.slot={
-//     date:this.selectedDate,
-//     time:this.selectedSlot
-//   }
-// this.userService.postPaymentData(this.doctorData,this.userId,this.slot).subscribe(
-//   async (res:any)=>{
-//     let stripe = await loadStripe(environment.stripeKEY);
-//     stripe?.redirectToCheckout({
-//       sessionId:res.id
-//     })
-//   }
-// )
-// }
-
-
 onConfirmAppointment(paymentOption:string){
   if(paymentOption === 'wallet'){
     this.userService.getWallet(this.userId).subscribe({
@@ -106,6 +85,12 @@ onConfirmAppointment(paymentOption:string){
           this._snackBar.open('Insuffiecient balance in wallet','Close',{duration:3000});
         }
       }
+    })
+
+    this.userService.postTransactionDetails(this.userId,this.fees).subscribe({
+      next:(res)=>{
+        console.log('transaction created');
+        }
     })
   }else if(paymentOption === 'online'){
     this.bookAppointment();

@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DoctorService } from 'src/app/shared/doctor.service';
@@ -14,7 +14,10 @@ export class DocProfileEditComponent {
   selectedFileName!: string;
   docEditForm!: FormGroup;
   doctorData!: doctorProfile;
-
+  phoneRegex = /^[0-9]{10}$/; 
+  pinRegex = /^(?!000000)[0-9]{6}$/;
+  addressRegex= /^[A-Za-z\s.'-]+$/;
+  yearRegex = /^(?!0000)\d{4}$/;
 
   education: string[] = [
     'MBBS',
@@ -40,18 +43,18 @@ export class DocProfileEditComponent {
     this.doctorData = data.doctorData;
     if (this.doctorData?.education) {
       this.docEditForm = fb.group({
-        fullName: [this.doctorData.fullName || ''],
-        email: [this.doctorData.email || ''],
-        mobile_num: [this.doctorData.mobile_num || ''],
+        fullName: [{value:this.doctorData.fullName || '',disabled:true}],
+        email: [{value:this.doctorData.email || '',disabled:true}],
+        mobile_num: [this.doctorData.mobile_num || '',Validators.pattern(this.phoneRegex)],
         profilePic: [''],
         description: [this.doctorData.description || ''],
-        RegnNumber: [this.doctorData.RegnNumber || ''],
+        RegnNumber: [this.doctorData.RegnNumber || '',Validators.required],
         specialization: [this.doctorData.specialization || ''],
-        fee: [this.doctorData.fee || ''],
+        fee: [this.doctorData.fee || '',Validators.required],
         education: this.fb.group({
           degree: [this.doctorData?.education[0]?.degree || ''],
           college: [this.doctorData?.education[0]?.college || ''],
-          year: [this.doctorData?.education[0]?.graduation_year || ''],
+          year: [this.doctorData?.education[0]?.graduation_year || '',Validators.pattern(this.yearRegex)],
         }),
         experience: this.fb.group({
           hospital: [this.doctorData?.experience?.[0]?.hospital ?? ''],
@@ -72,8 +75,8 @@ export class DocProfileEditComponent {
   }
 
   onSubmit() {
-
-    const formData = new FormData();
+    if(this.docEditForm.valid){
+      const formData = new FormData();
     formData.append('fullName', this.docEditForm.get('fullName')?.value);
     formData.append('email', this.docEditForm.get('email')?.value);
     formData.append('mobile_num', this.docEditForm.get('mobile_num')?.value);
@@ -96,12 +99,7 @@ export class DocProfileEditComponent {
       formData.append('education[college]', education?.get('college')?.value);
       formData.append('education[graduation_year]', education?.get('year')?.value);
     }
-    // const experience = this.docEditForm.get('experience');
-    // if(experience?.value){
-
-    // formData.append('experience[hospital]',experience?.get('hospital')?.value || '');
-    // formData.append('experience[term]',experience?.get('term')?.value || '');
-    // }
+    
     const experience = this.docEditForm?.get('experience');
 
     if (experience) {
@@ -134,10 +132,9 @@ export class DocProfileEditComponent {
         });
       }
     })
-
-
-
-
+  }else{
+    this._snackBar.open('Form is Invalid! Please check the fields!!','Close',{duration:3000})
+    }
   }
 
 }

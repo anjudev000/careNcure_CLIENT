@@ -7,6 +7,7 @@ import { SocketService } from 'src/app/shared/socket.service';
 import { Router } from '@angular/router';
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+import { DoctorService } from 'src/app/shared/doctor.service';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 
 
@@ -23,6 +24,7 @@ interface Booking {
   Scheduled: string;
   BookedOn: string;
   Status: string;
+  AppId:number;
   Action: string;
   isCancelled: boolean;
   
@@ -32,6 +34,9 @@ interface PrescriptionDetails {
   advice: string;
   diagnosis: string;
   prescription: { medicine: string; dosage: string }[];
+}
+interface StatusRes{
+  status:string;
 }
 
 type Margins = [number, number, number, number];
@@ -47,6 +52,7 @@ export class UserAppointmentComponent {
 
   displayedColumns: string[] = ['No', 'Doctor', 'Scheduled', 'BookedOn', 'Status', 'Action'];
   dataSource!: MatTableDataSource<any>;
+  appointmntID!:number;
 
   constructor(
     private userService: UserService,
@@ -80,11 +86,13 @@ export class UserAppointmentComponent {
             Doctor: booking.doctorId.fullName,
             Scheduled: booking.slotBooked,
             BookedOn: booking.updatedAt.split(' ')[0],
+            AppId:booking.appointmentId,
             Status: booking.status,
             isCancelled: booking.status === 'Cancelled' ? true : false
 
           };
         });
+        
         console.log(bookings, 5222);
         this.dataSource = new MatTableDataSource(bookings);
       },
@@ -125,10 +133,24 @@ export class UserAppointmentComponent {
   }
 
   joinCall(roomId: string, email: string, booking: any): void {
-    const room = roomId;
-    this.socketService.userRoomJoin({ email, room });
-    const value = 'user';
-    this.router.navigate([`user/call/${room}`], { state: { value: 'user' } });
+    this.userService.getAppointmentStatus(booking._id).subscribe({
+      next:(res)=>{
+        const statusData = ((res as StatusRes).status);
+        
+        if (statusData === 'Cancelled') {
+          // If the appointment is cancelled, do not proceed with the video call.
+          console.log('Appointment is cancelled. Cannot start the call.');
+          this._snackBar.open('Appointment is cancelled. Cannot start the call.','Close',{duration:3000});
+          return;
+        }else{
+            const room = roomId;
+            this.socketService.userRoomJoin({ email, room });
+            const value = 'user';
+            this.router.navigate([`user/call/${room}`], { state: { value: 'user' } });
+
+        }
+      }
+    })
   }
 
   generatePDF(element:any){

@@ -41,13 +41,7 @@ this.signUpForm = this.fb.group({
 },{
   validator:this.passwordMatchValidator as ValidatorFn
 });
- /** spinner starts on init */
-//  this.spinner.show();
-
-//  setTimeout(() => {
-//    /** spinner ends after 5 seconds */
-//    this.spinner.hide();
-//  }, 5000);
+ 
 
 
 }

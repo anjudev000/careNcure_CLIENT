@@ -78,6 +78,9 @@ export class DoctorService {
   getDashData(doctorId:string){
     return this.http.get(environment.doctorapiBaseUrl+`/dashboard-data/${doctorId}`);
   }
+  getAppStatus(appointmentId:number){
+    return this.http.get(environment.doctorapiBaseUrl+`/get-appointment-status/${appointmentId}`);
+  }
 
 
   //helper methods

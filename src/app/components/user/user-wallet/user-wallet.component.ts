@@ -5,6 +5,9 @@ import { UserService } from 'src/app/shared/user.service';
 interface ApiResponse{
   userWalletAmount:number
 }
+interface logResponse{
+  logs:string[];
+}
 
 @Component({
   selector: 'app-user-wallet',
@@ -15,6 +18,7 @@ export class UserWalletComponent {
 
   userId:string ='';
   walletAmount:number = 0;
+  transactionLogs:string[] = [];
   constructor(
     private userService:UserService,
     private _dialoRef: MatDialogRef<UserWalletComponent>,
@@ -26,6 +30,17 @@ export class UserWalletComponent {
         this.walletAmount = ((res as ApiResponse).userWalletAmount);
         console.log(this.walletAmount);
         
+      }
+    })
+    this.userService.getAllTransactions(this.userId).subscribe({
+      next:(res)=>{
+          // Ensure the response is an array before assigning
+          if (Array.isArray(res)) {
+            this.transactionLogs = res;
+            console.log('Transaction Logs:', this.transactionLogs);
+          } else {
+            console.error('Invalid logs response:', res);
+          }
       }
     })
    }
