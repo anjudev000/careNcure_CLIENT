@@ -1,4 +1,4 @@
-<div *ngIf="!spinner">
+<div >
 
   <div class="container d-flex align-items-center justify-content-center p-2">
     <div class="row d-flex justify-content-center signUpArea">
@@ -96,14 +96,15 @@
               </div>
             </form>
           </mat-card-content>
+            <!-- error messages -->
+        <div *ngIf="showerrorMessages" class="custom-error-message">
+          {{showerrorMessages}}
+        </div>
         </mat-card>
 
 
 
-        <!-- error messages -->
-        <div *ngIf="showerrorMessages" class="custom-error-message">
-          {{showerrorMessages}}
-        </div>
+      
       </div>
     </div>
   </div>
@@ -112,6 +113,3 @@
 
 </div>
 
-<div *ngIf="spinner" class="flex justify-center w-full p-14">
-  <mat-spinner></mat-spinner>
-</div>

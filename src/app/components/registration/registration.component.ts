@@ -17,7 +17,6 @@ export class RegistrationComponent {
   @Input() showSuccessMessage!: boolean;
   @Input() isDoctor!: boolean;
   @Output() registrationSubmit: EventEmitter<any> = new EventEmitter<any>();
-  spinner: boolean = false;
 
   phoneRegex = /^[0-9]{10}$/;
   namePattern = /^[A-Za-z]+$/;
@@ -60,7 +59,6 @@ export class RegistrationComponent {
 
 
   onSubmit() {
-    this.spinner = true;
     const formData = { ...this.signUpForm.value };
     delete formData.confirmPassword;
     this.registrationSubmit.emit(formData);
