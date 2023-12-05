@@ -1,38 +1,40 @@
-<form [formGroup]="timeslotForm" (ngSubmit)="onSubmit()">
-    <div class="container">
-        <div class="slotGrid">
-
-            <div>
-                <h2>Choose Your Available slots</h2>
-                <mat-form-field appearance="fill" >
-                    <mat-label>Choose a date</mat-label>
-                    <input matInput [matDatepicker]="picker" formControlName="date" (ngModelChange)="onDateChange($event)"  [min]="minDate" [max]="maxDate">
-                    <mat-hint>MM/DD/YYYY</mat-hint>
-                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-datepicker #picker ></mat-datepicker>
-                </mat-form-field>
+<div class="flex items-center md:p-16">
+    <form [formGroup]="timeslotForm" (ngSubmit)="onSubmit()" class="w-full">
+        <div class="container w-full h-auto flex  justify-start p-10 flex-col items-center">
+            <div class="slotGrid w-full">
+    
+                <div>
+                    <h2>Choose Your Available slots</h2>
+                    <mat-form-field appearance="fill" >
+                        <mat-label>Choose a date</mat-label>
+                        <input matInput [matDatepicker]="picker" formControlName="date" (ngModelChange)="onDateChange($event)"  [min]="minDate" [max]="maxDate">
+                        <mat-hint>MM/DD/YYYY</mat-hint>
+                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker ></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                 <!-- Conditionally render the buttons only if a date is selected -->
+                 <div *ngIf="timeslotForm.get('date')?.value" class="grid grid-cols-1 md:grid-cols-5 gap-3 mt-2">
+                
+                    <button mat-raised-button color="primary" 
+                    type="button" 
+                    *ngFor="let timeSlot of timeSlots; let index=index"
+                    [ngClass]="{
+                        'selected-slot':selectedButtonIndices.includes(index),
+                        'available-slot':!selectedButtonIndices.includes(index),
+                        'booked-slot': isSlotBooked[index]
+                    }"
+                     (click)="handleButton(index,timeSlot)"
+                     [disabled]="isSlotBooked[index]"
+                   > {{ timeSlot }}</button>
+                    <input type="hidden" formControlName="selectedSlot" />
+                
+                </div>
+                <div class="mt-2">
+                    <button mat-raised-button color="warn" type="submit" [disabled]="timeslotForm.invalid">SUBMIT</button>
+                </div>
+    
             </div>
-             <!-- Conditionally render the buttons only if a date is selected -->
-             <div *ngIf="timeslotForm.get('date')?.value" class="buttonDiv">
-            
-                <button mat-raised-button color="primary" 
-                type="button" 
-                *ngFor="let timeSlot of timeSlots; let index=index"
-                [ngClass]="{
-                    'selected-slot':selectedButtonIndices.includes(index),
-                    'available-slot':!selectedButtonIndices.includes(index),
-                    'booked-slot': isSlotBooked[index]
-                }"
-                 (click)="handleButton(index,timeSlot)"
-                 [disabled]="isSlotBooked[index]"
-               > {{ timeSlot }}</button>
-                <input type="hidden" formControlName="selectedSlot" />
-            
-            </div>
-            <div>
-                <button mat-raised-button color="warn" type="submit" [disabled]="timeslotForm.invalid">SUBMIT</button>
-            </div>
-
         </div>
-    </div>
-</form>
+    </form>
+</div>

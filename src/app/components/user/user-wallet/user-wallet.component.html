@@ -9,13 +9,15 @@
     
             </div>
           </div>
-          <div class="usage-policy" style="margin-top: 50px;">
-            Transaction Log:
-           
-                <ul class="policy-text">
-                    <li *ngFor="let log of transactionLogs"> {{ log}}</li>
-                </ul>
-            
+          <div class="usage-policy flex flex-col">
+            <div>
+                Transaction Log:
+            </div>
+                <div class="flex flex-col gap-2">
+                    <div class="shadow-lg w-full p-3 font-normal" *ngFor="let log of transactionLogs">
+                        {{ log }}
+                    </div>
+                </div>
           </div>
     </div>
 </div>

@@ -3,7 +3,7 @@ import { User } from './user.model';
 import { loginModel } from './login.model';
 import { doctorPasswordresetModel } from './passwordReset.model';
 import { forgotModel } from './passwordReset.model';
-import { HttpClient,HttpHeaders } from '@angular/common/http';
+import { HttpClient,HttpHeaders,HttpParams } from '@angular/common/http';
 import { environment } from 'src/environment/environment';
 import { Prescription } from './prescription.model';
 
@@ -60,8 +60,12 @@ export class DoctorService {
   getDocSTatus(doctorId:string){
     return this.http.get(environment.doctorapiBaseUrl+`/getStatus/${doctorId}`);
   }
-  getAppointments(doctorId:string){
-   return this.http.get(environment.doctorapiBaseUrl+`/doctor-appointemnts/${doctorId}`);
+  getAppointments(doctorId:string, page: number, pageSize: number, filter: string){
+    const params = new HttpParams()
+    .set('page', page.toString())
+    .set('pageSize', pageSize.toString())
+    .set('filter', filter);
+   return this.http.get(environment.doctorapiBaseUrl+`/doctor-appointemnts/${doctorId}`,{ params });
   }
   cancelAppointments(id:string){
    return this.http.patch(environment.doctorapiBaseUrl+`/cancel-booking/${id}`,{});

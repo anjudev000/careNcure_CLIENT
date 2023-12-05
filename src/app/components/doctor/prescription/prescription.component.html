@@ -1,64 +1,71 @@
-<div class="flex flex-col">
-  <div mat-dialog-title>Create Prescription</div>
-<form class="flex flex-col" [formGroup]="prescriptionForm" (ngSubmit)="onSubmit()">
-  <div mat-dialog-content class="content row flex flex-col">
-   
-    
-  <div class="flex flex-col gap-2">
-      <!-- Appointmnetid -->
-      <mat-form-field appearance="fill">
-        <mat-label>Appoitnment  Id</mat-label>
-        <input matInput  formControlName="appId" >
-      </mat-form-field>
-  
-     <!-- Diagnosis -->
-      <mat-form-field appearance="fill">
-        <mat-label>Diagnosis</mat-label>
-        <input matInput placeholder="Enter the diagnosis" formControlName="diagnosis">
-      </mat-form-field>
-  </div>
-    
-
-   <div class="flex flex-col gap-2 ">
-      <!-- Medicines -->
-      <div class="flex flex-col" formArrayName="medicines">
-        <div *ngFor="let medicine of medicines.controls; let i = index" [formGroupName]="i" class="medicine-group">
-          <mat-form-field appearance="fill">
-            <mat-label>Medicine</mat-label>
-            <input matInput placeholder="Enter the findings" formControlName="medicine">
-          </mat-form-field>&nbsp;
-          <mat-form-field appearance="fill">
-            <mat-label>Dosage</mat-label>
-            <mat-select formControlName="dosage">
-              <mat-option *ngFor="let val of dosage" [value]="val">
-                {{val}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>&nbsp;
-          <button mat-stroked-button color="warn" type="button" (click)="removeMedicine(i)">
-            <mat-icon>remove_circle_outline</mat-icon>
-          </button>
-        </div>
-        
-      </div>
-        <!-- Add Medicine Button -->
-        <button mat-stroked-button color="primary" type="button" (click)="addMedicine()">
-          <mat-icon>add</mat-icon>Add Medicine
-        </button>
-   </div>
+<div class="main w-96">
+  <div class="flex flex-col">
+    <div mat-dialog-title>Create Prescription</div>
+  <form class="flex flex-col w-full" [formGroup]="prescriptionForm" (ngSubmit)="onSubmit()">
+    <div mat-dialog-content class="content row flex flex-col">
      
+      
+    <div class="flex flex-col gap-2">
+        <!-- Appointmnetid -->
+        <mat-form-field appearance="fill">
+          <mat-label>Appoitnment  Id</mat-label>
+          <input matInput class="w-80"  formControlName="appId" >
+        </mat-form-field>
+    
+       <!-- Diagnosis -->
+        <mat-form-field appearance="fill">
+          <mat-label>Diagnosis</mat-label>
+          <input matInput placeholder="Enter the diagnosis" formControlName="diagnosis">
+        </mat-form-field>
+    </div>
+      
   
-   <!-- Advice -->
-   <mat-form-field appearance="fill">
-    <mat-label>Advice</mat-label>
-    <input matInput formControlName="advice">
-  </mat-form-field>
-</div>
+     <div class="flex flex-col gap-2 ">
+        <!-- Medicines -->
+        <div class="flex flex-col" formArrayName="medicines">
+          <div *ngFor="let medicine of medicines.controls; let i = index" [formGroupName]="i" class="medicine-group ">
+            <mat-form-field class="w-full mt-2" appearance="fill">
+              <mat-label>Medicine</mat-label>
+              <input matInput placeholder="Enter the findings" formControlName="medicine">
+            </mat-form-field>&nbsp;
+            <mat-form-field class="w-full" appearance="fill">
+              <mat-label>Dosage</mat-label>
+              <mat-select formControlName="dosage">
+                <mat-option *ngFor="let val of dosage" [value]="val">
+                  {{val}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>&nbsp;
+            <button class="w-full" mat-stroked-button color="warn" type="button" (click)="removeMedicine(i)">
+              <mat-icon>remove_circle_outline</mat-icon> Remove Medicine
+            </button>
+          </div>
+          
+        </div>
+          <!-- Add Medicine Button -->
+          <button mat-stroked-button color="primary" class="mb-4" type="button" (click)="addMedicine()">
+            <mat-icon>add</mat-icon>Add Medicine
+          </button>
+     </div>
+       
+    
+     <!-- Advice -->
+     <mat-form-field class="w-full" appearance="fill">
+      <mat-label>Advice</mat-label>
+      <div class="w-full">
+      <input class="w-full" matInput formControlName="advice">
 
-  <!-- Submit button -->
-  <div mat-dialog-actions class="action">
-    <button mat-raised-button type="button" [mat-dialog-close]="false">Cancel</button>
-    <button mat-raised-button color="primary" type="submit">Generate</button>
+      </div>
+    </mat-form-field>
   </div>
-</form>
+  
+    <!-- Submit button -->
+    <div mat-dialog-actions class="w-full">
+      <div class="flex w-full">
+        <button mat-raised-button type="button" class="w-full" [mat-dialog-close]="false">Cancel</button>
+      <button mat-raised-button color="primary" class="w-full" type="submit">Generate</button>
+      </div>
+    </div>
+  </form>
+  </div>
 </div>

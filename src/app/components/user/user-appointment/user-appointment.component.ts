@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,ViewChild,AfterViewInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { UserService } from 'src/app/shared/user.service';
 import Swal from 'sweetalert2';
@@ -7,10 +7,9 @@ import { SocketService } from 'src/app/shared/socket.service';
 import { Router } from '@angular/router';
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
-import { DoctorService } from 'src/app/shared/doctor.service';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort} from '@angular/material/sort';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
-
-
 
 
 interface ApiResponse {
@@ -29,7 +28,6 @@ interface Booking {
   isCancelled: boolean;
   
 }
-
 interface PrescriptionDetails {
   advice: string;
   diagnosis: string;
@@ -54,23 +52,30 @@ export class UserAppointmentComponent {
   dataSource!: MatTableDataSource<any>;
   appointmntID!:number;
 
+  @ViewChild(MatPaginator, {static: false})
+  set paginator(value: MatPaginator) {
+    if (this.dataSource){
+      this.dataSource.paginator = value;
+    }
+  }
   constructor(
     private userService: UserService,
     private socketService: SocketService,
     private router: Router,
     private _snackBar: MatSnackBar,
 
-  ) { }
+  ) {
+    this.getAppointmentData();
+
+  }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
-
-  ngOnInit() {
-    this.getAppointmentData();
-  }
-
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator
+}
   getAppointmentData() {
     const userId = this.userService.getUserId();
     this.userService.getApppointmentData(userId).subscribe({
@@ -101,6 +106,8 @@ export class UserAppointmentComponent {
       }
     })
   }
+
+ 
 
   cancelAppointment(id: string) {
     console.log(62, id);

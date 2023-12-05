@@ -1,36 +1,40 @@
-<div class="container" style="margin: 50px;">
-    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; padding: 20px;">
-        <div class="bg-warning" style="width: 200px;">
-            <mat-card>
-                <mat-card-title>Total Appointments</mat-card-title>
-                <mat-card-content>{{totalAppointments}}</mat-card-content>
-              </mat-card>
+<div class="w-full h-full p-5">
+    <div class="flex flex-col items-center gap-20 md:px-20 ">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div class="bg-warning w-auto p-2" >
+                <mat-card class="w-auto p-2">
+                    <mat-card-title>Total Appointments</mat-card-title>
+                    <mat-card-content>{{totalAppointments}}</mat-card-content>
+                  </mat-card>
+            </div>
+            <div class="w-auto p-2" >
+                <mat-card class="w-auto p-2">
+                    <mat-card-title>Monthly Revenue</mat-card-title>
+                    <mat-card-content>{{monthlyRev}}</mat-card-content>          
+                </mat-card>
+            </div>
+            <div  class="w-auto p-2">
+                <mat-card class="w-auto p-2" *ngIf="!isAdmin">
+                    <mat-card-title>Weekly Revenue</mat-card-title>
+                    <mat-card-content>{{weeklyRev}}</mat-card-content>        
+                  </mat-card>
+                  <mat-card class="w-auto p-2" *ngIf="isAdmin">
+                    <mat-card-title>My Revenue</mat-card-title>
+                    <mat-card-content>{{totalAdminRevenue}}</mat-card-content>        
+                  </mat-card>
+            </div>
         </div>
-        <div style="width: 200px;">
-            <mat-card>
-                <mat-card-title>Monthly Revenue</mat-card-title>
-                <mat-card-content>{{monthlyRev}}</mat-card-content>          </mat-card>
+       <div class="w-full h-auto items-center px-2 flex flex-col md:flex-row gap-2">
+        <div class="md:w-1/2 w-11/12 h-auto">
+            <canvas #myChart class="w-1/2"></canvas>
         </div>
-        <div style="width: 200px;">
-            <mat-card *ngIf="!isAdmin">
-                <mat-card-title>Weekly Revenue</mat-card-title>
-                <mat-card-content>{{weeklyRev}}</mat-card-content>        
-              </mat-card>
-              <mat-card *ngIf="isAdmin">
-                <mat-card-title>My Revenue</mat-card-title>
-                <mat-card-content>{{totalAdminRevenue}}</mat-card-content>        
-              </mat-card>
+        <div class="md:w-1/2 w-11/12 h-10/12">
+            <canvas #myChart2 class="w-10/12"></canvas>
         </div>
+       </div>
+       
+        
     </div>
-   <div style="display: grid; grid-template-columns: 1fr 1fr;">
-    <div style="width: 700px;height: 700px; padding: 50px;">
-        <canvas #myChart></canvas>
-    </div>
-    <div style="width: 700px;height: 700px; padding: 50px;">
-        <canvas #myChart2></canvas>
-    </div>
-   </div>
-   
+    
     
 </div>
-

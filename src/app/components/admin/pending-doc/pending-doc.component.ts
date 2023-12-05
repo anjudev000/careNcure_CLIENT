@@ -29,11 +29,13 @@ export class PendingDocComponent {
     private adminService:AdminService,
     private _snackBar:MatSnackBar,
     private _dialog:MatDialog
-  ){}
-
-  ngOnInit(){
+  ){
     this.getPendingDoctors();
+
   }
+
+  
+  
   getPendingDoctors(){
    this.pendingDocSub =  this.adminService.getPendingDocList().subscribe({
       next:(res)=>{

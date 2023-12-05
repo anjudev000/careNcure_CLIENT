@@ -10,7 +10,8 @@ import { PrescriptionComponent } from '../prescription/prescription.component';
 import { Subscription } from 'rxjs';
 
 interface ApiResponse {
-  appointments: any
+  appointments: any;
+  totalItems:number;
 }
 interface confirmResponse {
   message: string
@@ -44,12 +45,16 @@ export class DoctorAppointmentsComponent {
   private confirmAppointmentsSub:Subscription | undefined;
   appointments: Appointment[] = [];
   isCancelled:boolean=false;
-  constructor(
+  spinner: boolean = true
+  page = 1; // Current page
+  pageSize = 8; // Number of items per page
+  totalItems = 0; // Total number of items
+  filter = ''; // Filter string
+    constructor(
     private doctorService: DoctorService,
     private socketService: SocketService,
     private _snackBar: MatSnackBar,
     private router: Router,
-    private route: ActivatedRoute,
     private _dialog: MatDialog
   ) { }
 
@@ -57,21 +62,37 @@ export class DoctorAppointmentsComponent {
     this.getAppointmentData();
   }
 
+
+
   getAppointmentData() {
     const doctorId = this.doctorService.getDoctorId();
-   this.appointmentsSub = this.doctorService.getAppointments(doctorId).subscribe({
+   this.appointmentsSub = this.doctorService.getAppointments(doctorId, this.page, this.pageSize, this.filter).subscribe({
       next: (res) => {
         console.log(466, res);
-
+        this.spinner = false
         const data = ((res as ApiResponse).appointments);
+        const  total = ((res as ApiResponse).totalItems);
         console.log(42222, data);
         this.appointments = data;
+        this.totalItems = total;
       },
       error: (err: any) => {
         alert('Error fetching the data!');
       }
     })
   }
+// Add these methods to your DoctorAppointmentsComponent class
+onPageChange(event: any) {
+  this.page = event.pageIndex + 1;
+  this.getAppointmentData();
+}
+
+applyFilter() {
+  this.page = 1;
+  this.getAppointmentData();
+}
+
+
 
   cancelAppointment(id: string) {
     console.log(62, id);

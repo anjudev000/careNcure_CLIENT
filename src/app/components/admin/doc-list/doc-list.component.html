@@ -1,9 +1,8 @@
 <app-data-table
 [displayedColumns]="doctorColumns"   
-    [dataSource]="dataSource"
-     (blockUser)="handleblock($event.Id,$event.isblock)"
-    
-     [isDoctor]="true"
+[dataSource]="dataSource"
+(blockUser)="handleblock($event.Id,$event.isblock)"
+[isDoctor]="true"
 >
     
 </app-data-table>

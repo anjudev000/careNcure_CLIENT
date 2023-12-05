@@ -1,27 +1,46 @@
 <div class="text-lg font-medium mt-2 px-6 mb-4">Your Appointments</div>
-<div class="grid grid-cols-1 lg:grid-cols-4 gap-4 px-6">
- <mat-card *ngFor="let app of appointments" class="appointment-card p-4 flex flex-col gap-4">
-      <mat-card-header class="flex flex-col gap-2">
-          <div class="flex justify-start">id: {{app.appointmentId}}</div>
-          <div class="flex justify-start">{{app?.userId?.fullName}}</div>
-          <div class="flex justify-start">{{app.slotBooked}}</div>
-          <div class="flex justify-start">{{app.status}}</div>
-          <div class="button-container flex gap-2">
-              <button mat-raised-button color="warn"  
-              class="w-full"
-              (click)="cancelAppointment(app._id)"
-              [disabled]="app.status === 'Cancelled' || app.status === 'Completed'"
-              >
-              Cancel
-            </button>
-              <button mat-raised-button color="primary"
-              class="w-full"
-              (click)="handleButtonClick(app)"
-              [disabled]="app.status === 'Cancelled'"              >
-              {{app.status === 'Confirmed'? 'Start Call': app.status === 'Completed'? 'Prescription':'Confirm'}}
-            </button>
-          </div>
-      </mat-card-header>
-  </mat-card>
+  <div class="w-full px-6">
+    <mat-form-field class="w-full md:w-4/12">
+      <input matInput placeholder="Filter" [(ngModel)]="filter" (ngModelChange)="applyFilter()" />
+    </mat-form-field>
+  </div>
+  <div *ngIf="!spinner" class="grid grid-cols-1 lg:grid-cols-4 gap-4 px-6">
+      <mat-card *ngFor="let app of appointments" class="appointment-card p-4 flex flex-col gap-4">
+        <mat-card-header class="flex flex-col gap-2">
+            <div class="flex justify-start">id: {{app.appointmentId}}</div>
+            <div class="flex justify-start">{{app?.userId?.fullName}}</div>
+            <div class="flex justify-start">{{app.slotBooked}}</div>
+            <div class="flex justify-start">{{app.status}}</div>
+            <div class="button-container flex gap-2">
+                <button mat-raised-button color="warn"  
+                class="w-full"
+                (click)="cancelAppointment(app._id)"
+                [disabled]="app.status === 'Cancelled' || app.status === 'Completed'"
+                >
+                Cancel
+              </button>
+                <button mat-raised-button color="primary"
+                class="w-full"
+                (click)="handleButtonClick(app)"
+                [disabled]="app.status === 'Cancelled'"              >
+                {{app.status === 'Confirmed'? 'Start Call': app.status === 'Completed'? 'Prescription':'Confirm'}}
+              </button>
+            </div>
+        </mat-card-header>
+    </mat-card>
 
+    
+  </div>
+  <div *ngIf="spinner" class="flex justify-center w-full p-14">
+    <mat-spinner></mat-spinner>
+  </div>
+
+<div class="w-full justify-end px-6">
+  <mat-paginator
+  [pageSize]="pageSize"
+ 
+  [pageIndex]="page - 1"
+  [length]="totalItems"
+  (page)="onPageChange($event)">
+</mat-paginator>
 </div>

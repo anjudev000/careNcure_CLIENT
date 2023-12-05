@@ -47,10 +47,11 @@
         <mat-error *ngIf="docEditForm.get('RegnNumber')?.hasError('required')">Registration Number required</mat-error>
 
       </mat-form-field>
+      <br>
 
       <!-- Education Group -->
-      <div formGroupName="education">
-        <span>EDUCATION</span><br><br>
+      <div formGroupName="education" class="mt-2">
+        <span>Education</span><br>
         <!-- Degree -->
         <mat-form-field appearance="fill">
           <mat-label>Degree</mat-label>
@@ -78,7 +79,7 @@
 
       <!-- Experience -->
       <div formGroupName="experience">
-        <span>EXPERIENCE</span><br>
+        <span>Experience</span><br>
         <!-- Hospital -->
         <mat-form-field appearance="fill">
           <mat-label>Hospital</mat-label>

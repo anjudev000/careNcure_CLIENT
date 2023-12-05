@@ -41,20 +41,26 @@ export class DataTableComponent  {
  @Input() displayedColumns!: string[];
  @Input() header!:string[];
  @Input() dataSource!: MatTableDataSource<UserData | DoctorData>;
-//  columnData:ColumnType={
-//       {title:'Name',dataProperty:'fullName'},
-//       {title:'Email',dataProperty:'email'}
-//  }
+
  @Output() blockUser:EventEmitter<{Id:string,isblock:boolean}> = new EventEmitter<{Id:string,isblock:boolean}>();
  @Output() approveDoctor:EventEmitter<{doctorId:string}> = new EventEmitter<{doctorId:string}>
  @Output() rejectDoctor:EventEmitter<{doctorId:string}> = new EventEmitter<{doctorId:string}>
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
+ @ViewChild(MatPaginator, {static: false})
+  set paginator(value: MatPaginator) {
+    if (this.dataSource){
+      this.dataSource.paginator = value;
+    }
+  }  @ViewChild(MatSort) sort!: MatSort;
 
-  ngOnInit(){
-    this.dataSource.paginator = this.paginator;
-  }
+  // ngOnInit(){
+  //   if (!this.dataSource) {
+  //     this.spinner = true
+  //   }
+  // }
 
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator
+}
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;

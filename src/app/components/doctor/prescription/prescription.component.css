@@ -14,3 +14,8 @@
 button{
     flex:1;
 } */
+
+.main {
+    overflow: hidden !important;
+    overflow-y: hidden !important;
+}

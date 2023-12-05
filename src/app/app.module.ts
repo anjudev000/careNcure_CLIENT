@@ -46,6 +46,7 @@ import { UserProfileComponent } from './components/user/user-profile/user-profil
 import { ProfileEditComponent } from './components/user/profile-edit/profile-edit.component';
 import { DocProfileComponent } from './components/doctor/doc-profile/doc-profile.component';
 import { DocProfileEditComponent } from './components/doctor/doc-profile/doc-profile-edit/doc-profile-edit.component';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 
 
@@ -158,6 +159,7 @@ interface NgxSpinnerConfig {
     ReportsandchartsComponent,
   ],
   imports: [
+    MatProgressSpinnerModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,

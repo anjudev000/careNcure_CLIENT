@@ -28,11 +28,11 @@ export class UserListComponent {
   block:boolean=true;
   constructor(private adminService:AdminService,
     private _snackBar:MatSnackBar
-    ){}
+    ){
+      this.getAllUser();
 
-  ngOnInit(){
-    this.getAllUser();
-  }
+    }
+
 
 
 getAllUser() {
