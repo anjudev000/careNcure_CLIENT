@@ -12,6 +12,7 @@ import { ActivatedRoute,Router } from '@angular/router';
 })
 export class OtpVerificationComponent {
   timer!:number;
+  spinner:boolean=false;
 @Input() errorMessages!:string;
 otpForm!:FormGroup;
 email:string='';
@@ -37,6 +38,7 @@ ngOnInit(){
 }
 
 onSubmit(){
+  this.spinner = true;
   const formData = this.otpForm.value;
  this.otpVerificationSubmit.emit(formData);
 

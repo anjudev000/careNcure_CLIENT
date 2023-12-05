@@ -1,4 +1,4 @@
-<div>
+<div *ngIf="!spinner">
   <div class="container lg:px-40  rounded-lg  flex-col">
 
     <h1>Your Bookings With Doctors till date</h1>
@@ -87,4 +87,8 @@
 
   </div>
 
+</div>
+
+<div *ngIf="spinner" class="flex justify-center w-full p-14">
+  <mat-spinner></mat-spinner>
 </div>

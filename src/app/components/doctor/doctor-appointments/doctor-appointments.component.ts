@@ -4,7 +4,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { DoctorService } from 'src/app/shared/doctor.service';
 import { SocketService } from 'src/app/shared/socket.service';
 import { Router } from '@angular/router';
-import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { PrescriptionComponent } from '../prescription/prescription.component';
 import { Subscription } from 'rxjs';

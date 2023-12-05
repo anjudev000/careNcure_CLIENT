@@ -11,6 +11,7 @@ import { FormBuilder,FormGroup,Validators } from '@angular/forms';
 export class ForgetPasswordComponent {
 
 @Input() errorMessages!:string;
+spinner:boolean=false;
 forgotPasswordForm!:FormGroup;
 @Output() emailSubmit:EventEmitter<any>=new EventEmitter<any>();
 
@@ -22,6 +23,7 @@ ngOnInit(){
 }
 
 onSubmit(){
+  this.spinner = true;
   const formData = this.forgotPasswordForm.value;
   this.emailSubmit.emit(formData);
 }

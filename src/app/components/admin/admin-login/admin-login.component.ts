@@ -21,6 +21,7 @@ export class AdminLoginComponent {
     submitted = false;
     returnUrl!: string;
     error = '';
+    spinner:boolean=false;
     constructor(private formBuilder: FormBuilder,
       private route: ActivatedRoute,
       private router: Router,
@@ -39,10 +40,11 @@ export class AdminLoginComponent {
       }
       
       onSubmit(){
+        this.spinner = true;
         const formData = this.loginForm.value;
        this.loginSubsription =  this.adminService.postLogin(formData).subscribe({
           next:res=>{
-            this.adminService.setToken((res as loginRes).adminToken);
+          this.adminService.setToken((res as loginRes).adminToken);
             this.router.navigateByUrl('/admin-dashboard');
           },
           error:err=>{

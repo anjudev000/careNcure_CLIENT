@@ -51,6 +51,7 @@ export class UserAppointmentComponent {
   displayedColumns: string[] = ['No', 'Doctor', 'Scheduled', 'BookedOn', 'Status', 'Action'];
   dataSource!: MatTableDataSource<any>;
   appointmntID!:number;
+  spinner:boolean=true;
 
   @ViewChild(MatPaginator, {static: false})
   set paginator(value: MatPaginator) {
@@ -80,6 +81,7 @@ export class UserAppointmentComponent {
     const userId = this.userService.getUserId();
     this.userService.getApppointmentData(userId).subscribe({
       next: (res) => {
+        this.spinner = false;
         const data = ((res as ApiResponse).bookings);
         console.log(42222, data);
         // console.table(433333,data)

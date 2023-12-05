@@ -1,4 +1,4 @@
-<div class="">
+<div *ngIf="!spinner">
 
   <div class="container d-flex align-items-center justify-content-center p-2">
     <div class="row d-flex justify-content-center signUpArea">
@@ -106,9 +106,12 @@
         </div>
       </div>
     </div>
-    <ngx-spinner type="ball-scale-multiple"></ngx-spinner>
   </div>
 
 
 
+</div>
+
+<div *ngIf="spinner" class="flex justify-center w-full p-14">
+  <mat-spinner></mat-spinner>
 </div>

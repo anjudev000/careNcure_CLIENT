@@ -1,23 +1,30 @@
-<div class="d-flex  justify-content-center align-items-center container">
-  <div class="row d-flex justify-content-center align-items-center form-cont ">
-    <h2>OTP VERIFICATION</h2>
-    <form class="d-flex flex-column" [formGroup]="otpForm" (ngSubmit)="onSubmit()">
-      <!-- <mat-form-field class="mb-3" appearance="fill">
-        <mat-label>Email</mat-label>
-        <input matInput type="email" [value]="email" formControlName="email">
-      </mat-form-field> -->
-
-      <mat-form-field class="mb-3" appearance="fill">
-        <mat-label>Enter your OTP</mat-label>
-        <input matInput type="text" placeholder="OTP" formControlName="otp">
-      </mat-form-field>
-      <button mat-raised-button style="background-color:rgb(0,151,178);" type="submit" [disabled]="otpForm.invalid">Verify</button>
-      <br>
-      <button mat-raised-button color="warn" (click)="resendOTP()" [disabled]="timer>0">
-        RESEND OTP {{timer>0? 'in ' + timer + ' seconds': ''}}
-      </button>
-      
-    </form>
+<div class="flex w-full justify-center mt-10">
+  <div class="flex flex-col justify-center" *ngIf="!spinner">
+    <div class="flex flex-col justify-center gap-2 items-center form-cont ">
+      <h2>OTP VERIFICATION</h2>
+      <form class="d-flex flex-column" [formGroup]="otpForm" (ngSubmit)="onSubmit()">
+     
+  
+        <mat-form-field class="mb-3" appearance="fill">
+          <mat-label>Enter your OTP</mat-label>
+          <input class="mr-2" matInput type="text" placeholder="OTP" formControlName="otp">
+        </mat-form-field>
+        <button class="ml-2" mat-raised-button style="background-color:rgb(0,151,178);" type="submit" [disabled]="otpForm.invalid">Verify</button>
+        <br>
+        <div class="w-full justify-end">
+          <button mat-raised-button color="warn" (click)="resendOTP()" [disabled]="timer>0">
+            RESEND OTP {{timer>0? 'in ' + timer + ' seconds': ''}}
+          </button>
+        </div>
+        
+      </form>
+    </div>
+   
   </div>
- 
+  
+  <div *ngIf="spinner" class="flex justify-center w-full p-14">
+    <mat-spinner></mat-spinner>
+  </div>
+  
+  
 </div>

@@ -12,8 +12,10 @@ export class LoginComponent {
   @Input() errorMessages!:string;
   @Input() isDoctor!:boolean;
   @Output() loginSubmit:EventEmitter<any> = new EventEmitter<any>();
-
   loginForm!:FormGroup;
+  spinner:boolean=false;
+
+
 constructor(private fb:FormBuilder){}
 userLoginModel = {
   email: '', 
@@ -27,6 +29,7 @@ ngOnInit(){
 }
 
 onSubmit(){
+  this.spinner = true;
   const formData = this.loginForm.value;
 
   this.loginSubmit.emit(formData);
