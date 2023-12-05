@@ -88,9 +88,10 @@ export class MainNavComponent {
           }
         }
       )
-
-      this.isDocAppproved()
+  this.isDocAppproved()
     }
+
+  
 
     logout(){
       this.userService.deleteToken();
@@ -115,7 +116,7 @@ export class MainNavComponent {
       this.doctorService.getDocSTatus(doctorId).subscribe({
         next:(res)=>{
           const status =((res as docStatusRes).docstatus);
-          console.log(status,11444);
+          console.log(doctorId, status,11444);
           
           if(status ==="Approved"){
             this.isApproved = true;
@@ -126,6 +127,10 @@ export class MainNavComponent {
             console.log(this.isApproved,120);
             
           }
+        },
+        error: error => {
+          console.log(130, 'eeror occured');
+          
         }
       })
       

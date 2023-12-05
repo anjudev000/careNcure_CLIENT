@@ -115,6 +115,8 @@ export class DoctorService {
   }
 
   deleteToken(){
+    console.log('token deleted');
+    
     localStorage.removeItem('doctorToken');
   }
 }

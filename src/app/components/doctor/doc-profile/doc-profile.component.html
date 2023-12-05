@@ -27,11 +27,11 @@
                   <div class="row pt-1 flex gap-20">
                     <div class="col-6 mb-3">
                       <div class="text-base font-medium">Specialization</div>
-                      <p class="text-muted text-xs">{{data && data.specialization}}</p>
+                      <p class="text-muted text-xs">{{data && data?.specialization}}</p>
                     </div>
                     <div class="col-6 mb-3">
                       <div class="text-base font-medium">Fees</div>
-                      <p class="text-muted text-xs">{{data && data.fee}}</p>
+                      <p class="text-muted text-xs">{{data && data?.fee}}</p>
                     </div>
                   </div>
                 </div>
@@ -43,15 +43,15 @@
                   <div class="row pt-1 flex gap-20">
                     <div class="col-4 mb-3">
                       <div class="text-base font-medium">Degree</div>
-                      <p class="text-muted text-xs">{{data && data.education[0].degree}}</p>
+                      <p class="text-muted text-xs">{{data && data.education[0]?.degree}}</p>
                     </div>
                     <div class="col-4 mb-3">
                       <div class="text-base font-medium">College</div>
-                      <p class="text-muted text-xs">{{data && data.education[0].college}}</p>
+                      <p class="text-muted text-xs">{{data && data.education[0]?.college}}</p>
                     </div>
                     <div class="col-4 mb-3">
                       <div class="text-base font-medium">Year</div>
-                      <p class="text-muted text-xs">{{data && data.education[0].graduation_year}}</p>
+                      <p class="text-muted text-xs">{{data && data.education[0]?.graduation_year}}</p>
                     </div>
 
                   </div>
@@ -63,11 +63,11 @@
                     <div class="row pt-1 flex gap-20" >
                       <div class="col-6 mb-3">
                         <div class="text-base font-medium">Hospital</div>
-                        <p class="text-muted text-xs">{{data && data.experience[0].hospital}}</p>
+                        <p class="text-muted text-xs">{{data && data.experience[0]?.hospital}}</p>
                       </div>
                       <div class="col-6 mb-3">
                         <div class="text-base font-medium">Term</div>
-                        <p class="text-muted text-xs">{{data && data.experience[0].term}}</p>
+                        <p class="text-muted text-xs">{{data && data.experience[0]?.term}}</p>
                       </div>
   
   

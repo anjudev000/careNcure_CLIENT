@@ -3,6 +3,7 @@ import { loginModel } from 'src/app/shared/login.model';
 import { DoctorService } from 'src/app/shared/doctor.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { MainNavComponent } from '../../main-nav/main-nav.component';
 
 interface DoctorLoginResponse{
   doctorToken:string
@@ -18,6 +19,7 @@ export class DoctorLoginComponent {
   errorMessages!:string;
   isDoctor:boolean = true;
   constructor(private doctorService:DoctorService,
+    private navService: MainNavComponent,
     private router:Router
     ){}
 
@@ -32,6 +34,7 @@ export class DoctorLoginComponent {
       this.postData = this.doctorService.postLogin(formData).subscribe(
         res=>{
           this.doctorService.setToken((res as DoctorLoginResponse).doctorToken);
+          this.navService.isDocAppproved(); 
           this.router.navigateByUrl('/doctor-home');
         },
         err=>{
