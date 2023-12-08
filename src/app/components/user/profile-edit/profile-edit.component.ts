@@ -1,10 +1,10 @@
-import { Component, Inject, Input } from '@angular/core';
+import { Component, Inject} from '@angular/core';
 import { FormBuilder, FormGroup, Validators, } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { UserService } from 'src/app/shared/user.service';
 import { UserProfile } from 'src/app/shared/userProfile.model';
+import {Subscription} from 'rxjs'
 
 @Component({
   selector: 'app-profile-edit',
@@ -18,13 +18,12 @@ export class ProfileEditComponent {
   phoneRegex = /^[0-9]{10}$/; 
   pinRegex = /^(?!000000)[0-9]{6}$/;
   addressRegex= /^[A-Za-z\s.'-]+$/;
-
+  subData : Subscription | undefined; 
 
   constructor(private fb: FormBuilder,
     private userService: UserService,
     private _snackBar: MatSnackBar,
     private _dialogRef: MatDialogRef<ProfileEditComponent>,
-    private _snackbar:MatSnackBar,
     @Inject(MAT_DIALOG_DATA) public data: { userData: UserProfile }
   ) {
     this.userdata = data.userData
@@ -84,25 +83,30 @@ export class ProfileEditComponent {
 
       // Send the formData to your backend API
       const userId = this.userService.getUserId();
-       this.userService.updateUserProfile(userId,formData).subscribe(
-        (response) => {
+       this.subData = this.userService.updateUserProfile(userId,formData).subscribe({
+        next:(response) => {
           this._snackBar.open('Profile updated successfully', 'Close', {
             duration: 2000,
           });
            this._dialogRef.close(true);
         },
-        (error) => {
+        error:(error) => {
           // Handle error, e.g., show an error message
-          this._snackBar.open('Error updating profile', 'Close', {
+          this._snackBar.open(error, 'Close', {
             duration: 2000,
           });
         }
-      );
+    });
     }else{
       this._snackBar.open('Form is not valid! Please check the fileds!','Close',{duration:3000})
     }
      
   }
 
+  ngOnDestroy(){
+    if(this.subData){
+      this.subData.unsubscribe();
+    }
+  }
 
 }

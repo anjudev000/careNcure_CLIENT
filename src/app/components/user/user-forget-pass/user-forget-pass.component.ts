@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { UserService } from 'src/app/shared/user.service';
 import { forgotModel } from 'src/app/shared/passwordReset.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import {Subscription} from 'rxjs';
 
 
 @Component({
@@ -10,18 +11,19 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./user-forget-pass.component.css']
 })
 export class UserForgetPassComponent {
-
   errorMessages!:string;
+  subData:Subscription | undefined;
+
   constructor(private userService:UserService,
     private _snackBar: MatSnackBar,
     ){}
 
   handleForgotSubmit(formData:forgotModel){
-    this.userService.postEmailForgotPassword(formData).subscribe(
-      res=>{
+   this.subData = this.userService.postEmailForgotPassword(formData).subscribe({
+      next:(res)=>{
         this._snackBar.open('A Link has been sent to your mail to reset the password','Close',{duration:3000});
       },
-      err=>{
+      error:(err)=>{
         if(err.status === 400){
           this.errorMessages = 'Invalid Email';
         }
@@ -30,6 +32,10 @@ export class UserForgetPassComponent {
         }
         this._snackBar.open(this.errorMessages,'close',{duration:3000});
       }
-    )
+  })
+  }
+
+  ngOnDestroy(){
+    this.subData?.unsubscribe();
   }
 }

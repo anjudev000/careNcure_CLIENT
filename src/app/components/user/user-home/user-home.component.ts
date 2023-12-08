@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { UserService } from 'src/app/shared/user.service';
 import { Router } from '@angular/router';
+import {Subscription} from 'rxjs';
 
 interface UserProfileResponse{
   user:any;
@@ -13,18 +14,24 @@ interface UserProfileResponse{
 })
 export class UserHomeComponent {
 userDetails:any;
-
+subData : Subscription | undefined;
 constructor(private userservice:UserService,private router:Router){}
 
 ngOnInit(){
-  this.userservice.getUserProfile().subscribe(
-    res=>{
+  this.subData = this.userservice.getUserProfile().subscribe({
+    next:(res)=>{
       this.userDetails = (res as UserProfileResponse).user;
     },
-    err=>{
+    error:(err)=>{
       console.log(err.message);
     }
-  )
+   } )
+}
+
+ngOnDestroy(){
+  if(this.subData){
+    this.subData.unsubscribe();
+  }
 }
 
 }

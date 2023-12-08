@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { DoctorDataService } from 'src/app/shared/doctor-data.service';
 import { UserService } from 'src/app/shared/user.service';
 
@@ -51,8 +52,7 @@ export class FindDoctorsComponent {
   doctorsList!:any;
   docCount!:number;
   deptName!:Department;
-  // panelOpenState = false;
-   
+  subData : Subscription | undefined; 
   
   constructor(private route:ActivatedRoute,
     private userservice:UserService,
@@ -69,7 +69,7 @@ export class FindDoctorsComponent {
   }
 
   getAllDoctor(deptName:Department){
-    this.userservice.getDeptWiseDoctor(deptName).subscribe({
+    this.subData = this.userservice.getDeptWiseDoctor(deptName).subscribe({
       next:(res)=>{
         this.doctorsList = ((res as ApiResponse).doctors);
         this.docCount = this.doctorsList.length;
@@ -93,5 +93,11 @@ export class FindDoctorsComponent {
     console.log(8000,doctor.fullName);
     this.doctorData.setDoc(doctor);
     this.router.navigateByUrl('/booking')
+  }
+
+  ngOnDestroy(){
+    if(this.subData){
+      this.subData.unsubscribe();
+    }
   }
 }

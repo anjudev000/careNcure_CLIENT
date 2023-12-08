@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { UserService } from 'src/app/shared/user.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 
 interface userIdRes{
@@ -20,6 +21,8 @@ interface newPasswordData {
 export class UserResetPasswordComponent {
 
   errorMessages!:string;
+  passResetSub : Subscription |undefined;
+  updatepasssSub: Subscription | undefined;
   
   constructor(private userService:UserService,
     private _snackBar: MatSnackBar,
@@ -27,25 +30,25 @@ export class UserResetPasswordComponent {
   
     ){}
   handlepasswordResetSubmit(data:any){
-    this.userService.getUserIdfromPasswordToken(data.token).subscribe(
-      res=>{
+   this.passResetSub =  this.userService.getUserIdfromPasswordToken(data.token).subscribe({
+      next:(res)=>{
         const userId = ((res as userIdRes).userId);
         this.updatePassword(userId,data.password)
       },
-      err=>{
+      error:(err)=>{
         console.log("error getting userId",err.error.message);
       }
-    )
+  })
   }
 
   updatePassword(userId:string,newPassword:string){
     const newPasswordData:newPasswordData = {userId,newPassword}
-    this.userService.postNewPassword(newPasswordData).subscribe(
-      res=>{
+    this.updatepasssSub = this.userService.postNewPassword(newPasswordData).subscribe({
+      next:(res)=>{
         this._snackBar.open('Password Changed Successfully','close',{duration:3000});
         this.router.navigate(['/user-login']);
       },
-      err=>{
+      error:(err)=>{
         if (err.error && err.error.message) {
           // Display the error message from the server response
           this.errorMessages = err.error.message;
@@ -55,7 +58,16 @@ export class UserResetPasswordComponent {
         }
         this._snackBar.open(this.errorMessages,'Close',{duration:3000});
       }
-    )
+  })
+  }
+
+  ngOnDestroy(){
+    if(this.passResetSub){
+      this.passResetSub.unsubscribe();
+    }
+    if(this.updatepasssSub){
+      this.passResetSub?.unsubscribe();
+    }
   }
 
 }

@@ -1,4 +1,4 @@
-import { Component,ViewChild,AfterViewInit } from '@angular/core';
+import { Component,ViewChild} from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { UserService } from 'src/app/shared/user.service';
 import Swal from 'sweetalert2';
@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import {MatPaginator} from '@angular/material/paginator';
-import {MatSort} from '@angular/material/sort';
+import {Subscription} from 'rxjs';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 
 
@@ -52,6 +52,11 @@ export class UserAppointmentComponent {
   dataSource!: MatTableDataSource<any>;
   appointmntID!:number;
   spinner:boolean=true;
+  getAppSub: Subscription | undefined;
+  cancelAppSub: Subscription | undefined;
+  joinAppSub: Subscription | undefined;
+  pdfAppSub: Subscription | undefined;
+
 
   @ViewChild(MatPaginator, {static: false})
   set paginator(value: MatPaginator) {
@@ -79,7 +84,7 @@ export class UserAppointmentComponent {
 }
   getAppointmentData() {
     const userId = this.userService.getUserId();
-    this.userService.getApppointmentData(userId).subscribe({
+    this.getAppSub = this.userService.getApppointmentData(userId).subscribe({
       next: (res) => {
         this.spinner = false;
         const data = ((res as ApiResponse).bookings);
@@ -122,7 +127,7 @@ export class UserAppointmentComponent {
       cancelButtonText: 'Cancel'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.userService.cancelAppointment(id).subscribe({
+        this.cancelAppSub = this.userService.cancelAppointment(id).subscribe({
           next: (res) => {
             const cancelledAppointment = this.dataSource.data.find(app => app._id === id);
             if (cancelledAppointment) {
@@ -142,7 +147,7 @@ export class UserAppointmentComponent {
   }
 
   joinCall(roomId: string, email: string, booking: any): void {
-    this.userService.getAppointmentStatus(booking._id).subscribe({
+   this.joinAppSub = this.userService.getAppointmentStatus(booking._id).subscribe({
       next:(res)=>{
         const statusData = ((res as StatusRes).status);
         
@@ -163,7 +168,7 @@ export class UserAppointmentComponent {
   }
 
   generatePDF(element:any){
-    this.userService.getPrescriptionDetails(element._id).subscribe({
+    this.pdfAppSub = this.userService.getPrescriptionDetails(element._id).subscribe({
       next:(res)=>{
         console.log(129,res);
         const advice = ((res as PrescriptionDetails).advice);
@@ -207,6 +212,21 @@ export class UserAppointmentComponent {
       }
     })
     
+  }
+
+  ngOnDestroy(){
+    if(this.getAppSub){
+      this.getAppSub.unsubscribe();
+    }
+    if(this.cancelAppSub){
+      this.cancelAppSub.unsubscribe();
+    }
+    if(this.joinAppSub){
+      this.joinAppSub.unsubscribe();
+    }
+    if(this.pdfAppSub){
+      this.pdfAppSub.unsubscribe();
+    }
   }
 
 }

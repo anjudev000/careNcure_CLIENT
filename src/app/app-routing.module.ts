@@ -3,8 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { UserRegistrationComponent } from './components/user/user-registration/user-registration.component';
 import { DoctorRegistrationComponent } from './components/doctor/doctor-registration/doctor-registration.component';
-import { OtpVerificationComponent } from './components/otp-verification/otp-verification.component';
-import { LoginComponent } from './components/login/login.component';
 import { UserLoginComponent } from './components/user/user-login/user-login.component';
 import { DoctorLoginComponent } from './components/doctor/doctor-login/doctor-login.component';
 import { UserOtpVerifyComponent } from './components/user/user-otp-verify/user-otp-verify.component';
@@ -13,7 +11,6 @@ import { UserHomeComponent } from './components/user/user-home/user-home.compone
 import { userAuthServiceGuard } from './auth/user-auth-service.guard';
 import { UserForgetPassComponent } from './components/user/user-forget-pass/user-forget-pass.component';
 import { DoctorForgetPasswordComponent } from './components/doctor/doctor-forget-password/doctor-forget-password.component';
-import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { UserResetPasswordComponent } from './components/user/user-reset-password/user-reset-password.component';
 import { DoctorHomeComponent } from './components/doctor/doctor-home/doctor-home.component';
 import { doctorAuthGuard } from './auth/doctor-auth.guard';

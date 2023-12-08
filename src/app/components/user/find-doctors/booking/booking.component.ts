@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { DoctorDataService } from 'src/app/shared/doctor-data.service';
 import { DatePipe } from '@angular/common';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormGroup } from '@angular/forms';
 
 
 @Component({
@@ -20,10 +19,8 @@ export class BookingComponent {
   selectedDate:Date | null =null;
   displayedSlots:string[] = [];
    
-  constructor(private route:ActivatedRoute,
-    private fb:FormBuilder,
+  constructor(
     private doctorData:DoctorDataService,
-    private _snackBar:MatSnackBar,
     private router:Router
     ){}
   ngOnInit(){
@@ -38,9 +35,7 @@ export class BookingComponent {
   availableTimeSlots(){
     if(this.selectedDate){
       const formattedDate = this.datePipe.transform(this.selectedDate, 'MMM dd, yyyy');
-      console.log(formattedDate,41);
       const selectedDoctor = this.doctorData.getDoc();
-      console.log(selectedDoctor,399999);
       const availableSlots = selectedDoctor.slots.find((slot)=>slot.date === formattedDate);
 
     if (availableSlots && availableSlots.timeslots.length > 0) {

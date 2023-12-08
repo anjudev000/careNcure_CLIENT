@@ -3,9 +3,11 @@ import { FormGroup } from '@angular/forms';
 import { loginModel } from 'src/app/shared/login.model';
 import { UserService } from 'src/app/shared/user.service';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
-interface LoginResponse{
-  userToken:string
+
+interface LoginResponse {
+  userToken: string
 }
 
 @Component({
@@ -14,38 +16,47 @@ interface LoginResponse{
   styleUrls: ['./user-login.component.css']
 })
 export class UserLoginComponent {
-  loginForm! :FormGroup;
-  errorMessages!:string;
-  isDoctor:boolean = false;
-constructor(private userService: UserService, private router:Router){}
+  loginForm!: FormGroup;
+  errorMessages!: string;
+  isDoctor: boolean = false;
+  subData: Subscription | undefined;
 
-ngOnInit(){
- if(this.userService.isLoggedIn()) {
-  this.router.navigateByUrl('/user-home');
+  constructor(private userService: UserService, private router: Router) { }
+
+  ngOnInit() {
+    if (this.userService.isLoggedIn()) {
+      this.router.navigateByUrl('/user-home');
+    }
   }
-}
 
 
-  handleLoginSubmit(formData:loginModel){
-    this.errorMessages='';
-  
-    this.userService.postLogin(formData).subscribe(
-      res =>{
-      
-       this.userService.setToken((res as LoginResponse).userToken);
-       
+  handleLoginSubmit(formData: loginModel) {
+    this.errorMessages = '';
+
+    this.subData = this.userService.postLogin(formData).subscribe({
+      next:(res) => {
+
+        this.userService.setToken((res as LoginResponse).userToken);
+
         this.router.navigateByUrl('/user-home');
       },
-      err=>{
+      error:(err) => {
         this.errorMessages = err.error.message;
-        if(err.error.notVerified){
-        this.errorMessages='User Not Verified! Please Verify to continue. Otp is send to your mail';
-        setTimeout(()=>{
-          this.router.navigate(['/user-otp-verify'],{state:{email:formData.email}});
-        },6000)
-      } 
+        if (err.error.notVerified) {
+          this.errorMessages = 'User Not Verified! Please Verify to continue. Otp is send to your mail';
+          setTimeout(() => {
+            this.router.navigate(['/user-otp-verify'], { state: { email: formData.email } });
+          }, 6000)
+        }
       }
-    )
+  })
   }
+
+  ngOnDestroy(){
+    if(this.subData){
+      this.subData.unsubscribe();
+    }
+  }
+  
 
 }

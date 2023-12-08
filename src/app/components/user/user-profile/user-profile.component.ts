@@ -3,6 +3,8 @@ import { UserService } from 'src/app/shared/user.service';
 import { UserProfile } from 'src/app/shared/userProfile.model';
 import { ProfileEditComponent } from '../profile-edit/profile-edit.component';
 import {MatDialog, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
+
 
 
 interface ApiResponse{
@@ -17,6 +19,7 @@ interface ApiResponse{
 export class UserProfileComponent {
 
   data!:UserProfile
+  profileDataSub: Subscription | undefined;
   constructor(private userService:UserService,
     private _dialog:MatDialog
     ){} 
@@ -34,7 +37,7 @@ export class UserProfileComponent {
 
   getUserInfo(){
     const userId = this.userService.getUserId();
-    this.userService.getUserProfileData(userId).subscribe({
+    this.profileDataSub = this.userService.getUserProfileData(userId).subscribe({
       next:(res)=>{
         this.data = ((res as ApiResponse).userData)
         
@@ -62,5 +65,11 @@ export class UserProfileComponent {
       
     })
 
+  }
+
+  ngOnDestroy(){
+    if(this.profileDataSub){
+      this.profileDataSub.unsubscribe();
+    }
   }
 }
