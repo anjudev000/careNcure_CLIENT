@@ -83,59 +83,60 @@ const routes: Routes = [
     path: 'admin-dashboard', component: AdminDashComponent, canActivate: [adminGuard]
   },
   {
-    path:'userList',component:UserListComponent,canActivate:[adminGuard]
+    path: 'userList', component: UserListComponent, canActivate: [adminGuard]
   },
   {
-    path:'docList',component:DocListComponent,canActivate:[adminGuard]
+    path: 'docList', component: DocListComponent, canActivate: [adminGuard]
   },
   {
-    path:'pending-doc-list',component:PendingDocComponent,canActivate:[adminGuard]
+    path: 'pending-doc-list', component: PendingDocComponent, canActivate: [adminGuard]
   },
   {
-    path:'user-profile',component:UserProfileComponent,canActivate:[userAuthServiceGuard]
+    path: 'user-profile', component: UserProfileComponent, canActivate: [userAuthServiceGuard]
   },
   {
- path:'doctor-profile',component:DocProfileComponent,canActivate:[doctorAuthGuard]
+    path: 'doctor-profile', component: DocProfileComponent, canActivate: [doctorAuthGuard]
   },
   {
-    path:'schedule-slot',component:ScheduleSlotComponent,canActivate:[doctorAuthGuard]
+    path: 'schedule-slot', component: ScheduleSlotComponent, canActivate: [doctorAuthGuard]
   },
   {
-    path:'search-speciality',component:SearchSpecialityComponent,canActivate:[userAuthServiceGuard]
+    path: 'search-speciality', component: SearchSpecialityComponent, canActivate: [userAuthServiceGuard]
   },
   {
-    path:'search-doctors',component:FindDoctorsComponent,canActivate:[userAuthServiceGuard]
+    path: 'search-doctors', component: FindDoctorsComponent, canActivate: [userAuthServiceGuard]
   },
   {
-    path:'booking',component:BookingComponent,canActivate:[userAuthServiceGuard]
+    path: 'booking', component: BookingComponent, canActivate: [userAuthServiceGuard]
   },
   {
-    path:'booking-details',component:BookingDetailsComponent,canActivate:[userAuthServiceGuard]
+    path: 'booking-details', component: BookingDetailsComponent, canActivate: [userAuthServiceGuard]
   },
   {
-    path:'booking-success',component:SuccessPageComponent,canActivate:[userAuthServiceGuard]
+    path: 'booking-success', component: SuccessPageComponent, canActivate: [userAuthServiceGuard]
   },
   {
-    path:'payment-failed',component:PaymentFailedComponent,canActivate:[userAuthServiceGuard]
+    path: 'payment-failed', component: PaymentFailedComponent, canActivate: [userAuthServiceGuard]
   },
   {
-    path:'user-appointment',component:UserAppointmentComponent,canActivate:[userAuthServiceGuard]
+    path: 'user-appointment', component: UserAppointmentComponent, canActivate: [userAuthServiceGuard]
   },
   {
-    path:'doctor-appointemnts',component:DoctorAppointmentsComponent,canActivate:[doctorAuthGuard]
+    path: 'doctor-appointemnts', component: DoctorAppointmentsComponent, canActivate: [doctorAuthGuard]
   },
   {
-    path:'blocked',component:BlockedPageComponent
+    path: 'blocked', component: BlockedPageComponent
   },
   {
-    path:'doctor/call/:room',component:VideoCallComponent,canActivate:[doctorAuthGuard]
+    path: 'doctor/call/:room', component: VideoCallComponent, canActivate: [doctorAuthGuard]
   },
   {
-    path:'user/call/:room',component:VideoCallComponent,canActivate:[userAuthServiceGuard]
+    path: 'user/call/:room', component: VideoCallComponent, canActivate: [userAuthServiceGuard]
   },
- {
+  {
     path: '', redirectTo: 'home', pathMatch: 'full'
-  }
+  },
+ // { path: 'doctor', loadChildren: () => import('./doctor/doctor.module').then(m => m.DoctorModule) }
 ];
 
 @NgModule({
