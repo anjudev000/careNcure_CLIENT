@@ -40,8 +40,9 @@ export class AdminLoginComponent {
       }
       
       onSubmit(){
-        this.spinner = true;
-        const formData = this.loginForm.value;
+        //this.spinner = true;
+
+      const formData = this.loginForm.value;
        this.loginSubsription =  this.adminService.postLogin(formData).subscribe({
           next:res=>{
           this.adminService.setToken((res as loginRes).adminToken);

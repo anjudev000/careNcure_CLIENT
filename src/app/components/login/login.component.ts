@@ -13,7 +13,7 @@ export class LoginComponent {
   @Input() isDoctor!:boolean;
   @Output() loginSubmit:EventEmitter<any> = new EventEmitter<any>();
   loginForm!:FormGroup;
-  spinner:boolean=false;
+  //spinner:boolean=false;
 
 
 constructor(private fb:FormBuilder){}
@@ -29,7 +29,7 @@ ngOnInit(){
 }
 
 onSubmit(){
-  this.spinner = true;
+  //this.spinner = true;
   const formData = this.loginForm.value;
 
   this.loginSubmit.emit(formData);
