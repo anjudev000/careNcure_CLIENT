@@ -12,7 +12,8 @@ export class SocketService {
 
   constructor() {
     // const config: SocketIoConfig = { url: 'https://carencure.site', options: {} };
-    const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
+    // const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
+    const config: SocketIoConfig = { url: 'https://carencure-server.onrender.com', options: {} };
 
     this.socket = io(config.url, config.options);
   }
