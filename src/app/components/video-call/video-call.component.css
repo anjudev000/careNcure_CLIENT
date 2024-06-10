@@ -16,3 +16,24 @@ mat-grid-list {
     width: 100%; /* Ensure the grid list takes up the full width */
     position: relative; /* Set position to relative for containing absolute-positioned children */
 }
+
+.online-indicator {
+    width: 10px;
+    height: 10px;
+    background-color: green;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+/* styles.css or the component's CSS file */
+@keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+.blinking-button {
+    animation: blink 1s infinite;
+}

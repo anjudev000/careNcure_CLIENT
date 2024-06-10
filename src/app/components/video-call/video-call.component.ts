@@ -30,6 +30,8 @@ export class VideoCallComponent {
   value!: string | null;
   appId!:string;
   myPeerConnection!: RTCPeerConnection | null;
+  incomingCall: boolean = false; // variable to indicate call arrives to blink the button
+  callInitiated: boolean = false; // to disable the button after initiating the call
 
 
   constructor(
@@ -54,6 +56,7 @@ export class VideoCallComponent {
     this.socketService.onIncomingCall().subscribe(async (data) => {
       const { from, offer } = data;
       this.remoteSocketId = from;
+      this.incomingCall = true; // Indicate that a call is incoming
       console.log('Incoming call from', from, 'and offer ', offer);
 
       const ans = await this.peerService.getAnswer(offer);
@@ -153,6 +156,7 @@ export class VideoCallComponent {
       const offer = await this.peerService.getOffer();
       this.socketService.emitUserCall({ to: this.remoteSocketId, offer: offer });
       console.log('Call offer sent successfully');
+      this.callInitiated = true;
     } catch (error) {
       console.error('Error handling call:', error);
     }
@@ -206,8 +210,15 @@ ngOnDestroy(): void {
 
   sendStreams(): void {
     this.accepted = true;
+    this.incomingCall = false; 
     for(const track of this.myStream.getTracks()){
       this.peerService.peer.addTrack(track,this.myStream);
     }
+  }
+
+  acceptCall(): void {
+    this.incomingCall = false;
+    this.accepted = true;
+    this.sendStreams();
   }
 }

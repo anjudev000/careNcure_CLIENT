@@ -6,6 +6,7 @@
     
     <div *ngIf="value === 'doctor'">
         <div *ngIf="remoteSocketId; else noPatient">
+            <div class="online-indicator"></div>
             Patient Online
         </div>
         <ng-template #noPatient>
@@ -50,10 +51,13 @@
             <!-- accept call button -->
          <button mat-raised-button style="background-color: green;" *ngIf="value === 'user' && myStream && !accepted"
           (click)="sendStreams()"
+          [ngClass]="{'blinking-button':incomingCall}"
         ><mat-icon>phone_in_talk</mat-icon></button>
 
             <!-- call button -->
         <button mat-raised-button color="primary" *ngIf="!callActive && value === 'doctor' && remoteSocketId"
-            (click)="handleCallUser()"><mat-icon> call</mat-icon></button>
+            (click)="handleCallUser()"
+            [disabled]="callInitiated"
+            ><mat-icon> call</mat-icon></button>
     </div>
 </div>

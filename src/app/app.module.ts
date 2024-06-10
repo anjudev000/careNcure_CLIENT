@@ -104,6 +104,7 @@ import { VideoCallComponent } from './components/video-call/video-call.component
 import { DoctorWalletComponent } from './components/doctor/doctor-wallet/doctor-wallet.component';
 import { PrescriptionComponent } from './components/doctor/prescription/prescription.component';
 import { ReportsandchartsComponent } from './Report&Charts/reportsandcharts.component';
+//import { PreLoginComponent } from './components/user/pre-login/pre-login.component';
 
 interface NgxSpinnerConfig {
   type?: string;
@@ -157,6 +158,7 @@ interface NgxSpinnerConfig {
     DoctorWalletComponent,
     PrescriptionComponent,
     ReportsandchartsComponent,
+    //PreLoginComponent,
   ],
   imports: [
     MatProgressSpinnerModule,

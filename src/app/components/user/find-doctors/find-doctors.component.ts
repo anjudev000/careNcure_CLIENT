@@ -91,6 +91,9 @@ export class FindDoctorsComponent {
 
   onClick(doctor:Doctor){
     console.log(8000,doctor.fullName);
+    for(let slot of doctor.slots){
+      console.log("doctors slots",slot.date);
+    }
     this.doctorData.setDoc(doctor);
     this.router.navigateByUrl('/booking')
   }

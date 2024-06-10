@@ -32,13 +32,15 @@ export class BookingComponent {
    
   }
 
-  availableTimeSlots(){
+  availableTimeSlots(){ 
     if(this.selectedDate){
-      const formattedDate = this.datePipe.transform(this.selectedDate, 'MMM dd, yyyy');
+      const formattedDate = this.datePipe.transform(this.selectedDate, 'dd MMM yyyy');
       const selectedDoctor = this.doctorData.getDoc();
       const availableSlots = selectedDoctor.slots.find((slot)=>slot.date === formattedDate);
+     
 
     if (availableSlots && availableSlots.timeslots.length > 0) {
+      console.log("line 42 testinggg")
       // Filter out past time slots if the selected date is today
       if (this.isToday(this.selectedDate)) {
         const now = new Date();
@@ -50,6 +52,9 @@ export class BookingComponent {
         });
       } else {
         this.displayedSlots = availableSlots.timeslots;
+        for(let sl of this.displayedSlots){
+          console.log("inside date selection: slots for the date is",sl);
+        }
       }
          // Sort the displayedSlots array in ascending order
            this.displayedSlots.sort((a, b) => {
@@ -62,8 +67,10 @@ export class BookingComponent {
     } else {
       this.displayedSlots = [];
     }
-  }else {
+  } else {
+
     this.displayedSlots = [];
+
   } }
 
   isToday(selectedDate: Date): boolean {

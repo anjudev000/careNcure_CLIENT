@@ -11,7 +11,9 @@ export class SocketService {
   private message: string = '';
 
   constructor() {
-    const config: SocketIoConfig = { url: 'https://carencure.site', options: {} };
+    // const config: SocketIoConfig = { url: 'https://carencure.site', options: {} };
+    const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
+
     this.socket = io(config.url, config.options);
   }
 
@@ -107,14 +109,4 @@ export class SocketService {
     if (this.socket) {
       this.socket.emit('disconnect:call', data);
     }
-  }
-
-  
-
-
- 
-
-
-
-  
-}
+  }}
